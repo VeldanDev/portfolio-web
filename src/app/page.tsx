@@ -83,14 +83,14 @@ function AnimatedCounter({ to, suffix = '' }: { to: number; suffix?: string }) {
 
 // ─── Terminal card ────────────────────────────────────────────────────────────
 
-const TERM_LINES = [
+const TERM_LINES: { cmd: boolean; text: string; green?: boolean }[] = [
   { cmd: true,  text: 'whoami'                        },
   { cmd: false, text: 'aditya@polmed'                 },
   { cmd: true,  text: 'status'                        },
   { cmd: false, text: '[ ONLINE ]',  green: true      },
   { cmd: true,  text: 'focus'                         },
   { cmd: false, text: 'embedded + web + networking'   },
-] as const;
+];
 
 function TerminalCard() {
   return (
