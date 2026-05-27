@@ -43,22 +43,23 @@ const PROJECTS: Project[] = [
     previewTags: ['Web Dev', 'Mobile', 'IoT', 'AI/LLM'],
   },
   {
+    id: 'spencerweb',
+    title: 'SpencerWeb',
+    description:
+      'Python-based web vulnerability scanner built for UMKM. Scans for SQLi, XSS, CSRF, SSL issues, open ports, sensitive files, and more. Features a real-time web dashboard, automated PDF reports in Bahasa Indonesia, and OWASP Top 10 framework. Built as Final Project (Tugas Akhir) at Politeknik Negeri Medan.',
+    techStack: ['Python', 'Node.js', 'Express', 'ReportLab', 'BeautifulSoup'],
+    status: 'active',
+    category: 'tools',
+    githubUrl: 'https://github.com/VeldanDev/SpencerWeb',
+    demoUrl: null,
+  },
+  {
     id: 'placeholder-iot',
     title: 'IoT Dashboard',
     description: 'Real-time sensor monitoring dashboard for ESP32-based devices. MQTT, live charts, and alerting.',
     techStack: ['ESP32', 'MQTT', 'Next.js', 'FastAPI'],
     status: 'wip',
     category: 'iot',
-    githubUrl: null,
-    demoUrl: null,
-  },
-  {
-    id: 'placeholder-tools',
-    title: 'Network Visualizer',
-    description: 'LAN topology mapper that captures ARP/ICMP traffic and renders live network graphs.',
-    techStack: ['Python', 'Scapy', 'D3.js'],
-    status: 'wip',
-    category: 'tools',
     githubUrl: null,
     demoUrl: null,
   },
@@ -250,6 +251,114 @@ function FeaturedCard({ project }: { project: Project }) {
   );
 }
 
+function RegularCard({ project, index }: { project: Project; index: number }) {
+  const status   = STATUS_META[project.status];
+  const category = CATEGORY_META[project.category];
+
+  return (
+    <motion.article
+      layout
+      variants={cardVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      transition={t(index * 0.06)}
+      className="group flex flex-col gap-4 p-5 rounded-lg border border-[#1f1f1f]
+                 bg-[#111111] hover:border-[#2a2a2a] transition-colors duration-200"
+    >
+      {/* Title + status dot */}
+      <div className="flex items-start justify-between gap-3">
+        <h3 className="text-sm font-semibold text-[#f1f1f1] leading-snug
+                       group-hover:text-[#4ade80] transition-colors duration-150">
+          {project.title}
+        </h3>
+        <span
+          className="shrink-0 mt-1 w-1.5 h-1.5 rounded-full"
+          style={{ backgroundColor: status.color }}
+          title={status.label}
+        />
+      </div>
+
+      {/* Badges */}
+      <div className="flex items-center gap-1.5 flex-wrap">
+        <span
+          className="flex items-center gap-1 px-2 py-0.5 text-[10px] tracking-widest
+                     uppercase rounded border"
+          style={{
+            color: status.color,
+            borderColor: `${status.color}40`,
+            backgroundColor: `${status.color}0d`,
+          }}
+        >
+          <span className="w-1 h-1 rounded-full" style={{ backgroundColor: status.color }} />
+          {status.label}
+        </span>
+        <span
+          className="px-2 py-0.5 text-[10px] tracking-widest uppercase rounded border"
+          style={{
+            color: category.color,
+            borderColor: `${category.color}33`,
+            backgroundColor: `${category.color}0d`,
+          }}
+        >
+          {category.label}
+        </span>
+      </div>
+
+      {/* Description */}
+      <p className="text-xs text-[#6b7280] leading-relaxed flex-1">
+        {project.description}
+      </p>
+
+      {/* Tech stack */}
+      {project.techStack.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {project.techStack.map((tech) => (
+            <span
+              key={tech}
+              className="px-2 py-0.5 text-[10px] rounded border border-[#1f1f1f]
+                         bg-[#0a0a0a] text-[#6b7280]"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Footer links */}
+      <div className="flex items-center gap-3 pt-2 border-t border-[#1f1f1f]">
+        {project.githubUrl && (
+          <a
+            href={project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-[11px] text-[#6b7280]
+                       hover:text-[#4ade80] transition-colors duration-150"
+          >
+            <GitBranch size={11} strokeWidth={1.5} />
+            Source
+          </a>
+        )}
+        {project.demoUrl && (
+          <a
+            href={project.demoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-[11px] text-[#6b7280]
+                       hover:text-[#38bdf8] transition-colors duration-150"
+          >
+            <ExternalLink size={11} strokeWidth={1.5} />
+            Live demo
+          </a>
+        )}
+        <span className="ml-auto text-[10px] tracking-wide" style={{ color: status.color }}>
+          {status.label}
+        </span>
+      </div>
+    </motion.article>
+  );
+}
+
 function PlaceholderCard({ project, index }: { project: Project; index: number }) {
   const category = CATEGORY_META[project.category];
 
@@ -404,13 +513,10 @@ export default function ProjectsPage() {
             if (project.featured) {
               return <FeaturedCard key={project.id} project={project} />;
             }
-            return (
-              <PlaceholderCard
-                key={project.id}
-                project={project}
-                index={i}
-              />
-            );
+            if (project.id.startsWith('placeholder')) {
+              return <PlaceholderCard key={project.id} project={project} index={i} />;
+            }
+            return <RegularCard key={project.id} project={project} index={i} />;
           })}
         </AnimatePresence>
       </div>
