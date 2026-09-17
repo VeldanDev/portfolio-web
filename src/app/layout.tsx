@@ -1,17 +1,31 @@
 import type { Metadata } from 'next';
-import { Geist_Mono } from 'next/font/google';
+import { Bricolage_Grotesque, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 import Sidebar from '@/components/layout/Sidebar';
 import MobileNav from '@/components/layout/MobileNav';
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const display = Bricolage_Grotesque({
+  variable: '--font-display',
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+});
+
+const sans = IBM_Plex_Sans({
+  variable: '--font-sans-body',
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+});
+
+const mono = IBM_Plex_Mono({
+  variable: '--font-plex-mono',
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
 });
 
 export const metadata: Metadata = {
-  title: 'Aditya Surya Putra | Portfolio',
-  description: 'Proof-of-work portfolio — Computer Engineering Student',
+  title: 'Aditya Surya Putra — AI & Security Engineer',
+  description:
+    'AI Engineer, Cybersecurity Engineer, and Software Developer. I build autonomous AI agents, offensive security tooling, and production software.',
 };
 
 export default function RootLayout({
@@ -20,13 +34,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistMono.variable} dark h-full antialiased`}
+      className={`${display.variable} ${sans.variable} ${mono.variable} dark h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full bg-[#0a0a0a]">
+      <body className="min-h-full bg-[#0a0b0e]">
         <Sidebar />
         <MobileNav />
-        {/* Offset right of sidebar on md+, add bottom padding on mobile for MobileNav */}
         <main className="md:ml-[240px] pb-[60px] md:pb-0">
           {children}
         </main>
