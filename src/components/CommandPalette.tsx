@@ -16,7 +16,7 @@ type Item = {
   run: (r: ReturnType<typeof useRouter>) => void; keywords?: string;
 };
 
-const EMAIL = 'yasurtraadityasuryaputra09@gmail.com';
+const EMAIL = 'kamadoaditya8@gmail.com';
 
 const ITEMS: Item[] = [
   { id: 'home', label: 'Home', group: 'Navigate', icon: Home, run: (r) => r.push('/') },

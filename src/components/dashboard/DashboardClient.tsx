@@ -288,7 +288,7 @@ function ContributionHeatmap({ weeks }: { weeks?: GitHubContributionWeek[] }) {
       <div className="mt-3 pt-3 border-t border-[#1f1f1f] flex items-center justify-between gap-4">
         <span className="text-[11px] text-[#3d3d3d] truncate">
           {hovered
-            ? `${fmtDay(hovered.date)} — ${hovered.count} contribution${hovered.count !== 1 ? 's' : ''}`
+            ? `${fmtDay(hovered.date)}: ${hovered.count} contribution${hovered.count !== 1 ? 's' : ''}`
             : 'Hover a day to see details'}
         </span>
         <div className="flex items-center gap-1.5 shrink-0">
@@ -441,7 +441,7 @@ export default function DashboardClient({ github, wakatime }: Props) {
             <ContributionHeatmap weeks={github.contributionCalendar} />
           </>
         ) : (
-          <EmptyState message="GitHub data unavailable — check GITHUB_TOKEN" />
+          <EmptyState message="GitHub data unavailable. Check the GITHUB_TOKEN env var." />
         )}
       </motion.section>
 
@@ -590,7 +590,7 @@ export default function DashboardClient({ github, wakatime }: Props) {
             ) : null}
           </>
         ) : (
-          <EmptyState message="WakaTime data unavailable — check WAKATIME_API_KEY" />
+          <EmptyState message="WakaTime data unavailable. Check the WAKATIME_API_KEY env var." />
         )}
       </motion.section>
 
@@ -606,13 +606,13 @@ export default function DashboardClient({ github, wakatime }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <ComingSoonCard
             title="Monkeytype"
-            description="Typing speed stats — WPM, accuracy, personal bests by mode."
+            description="Typing speed, accuracy, and personal bests by mode."
             icon={Keyboard}
             delay={0}
           />
           <ComingSoonCard
             title="Umami Analytics"
-            description="Site traffic — pageviews, unique visitors, top countries."
+            description="Pageviews, unique visitors, and top countries."
             icon={BarChart2}
             delay={0.08}
           />

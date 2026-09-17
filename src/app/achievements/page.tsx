@@ -15,19 +15,19 @@ const view = { once: true, margin: '-60px' } as const;
 /* Real, honest milestones already earned */
 const MILESTONES = [
   { icon: Package, title: 'Published Scepter on npm', meta: 'scepter-mcp · open source', color: C.violet, href: 'https://www.npmjs.com/package/scepter-mcp' },
-  { icon: ShieldCheck, title: 'SpencerWeb — OWASP Top 10 scanner', meta: 'Final project · web security', color: C.cyan, href: 'https://github.com/VeldanDev/SpencerWeb' },
+  { icon: ShieldCheck, title: 'SpencerWeb OWASP scanner', meta: 'Final project · web security', color: C.cyan, href: 'https://github.com/VeldanDev/SpencerWeb' },
   { icon: GitBranch, title: '18+ repositories shipped', meta: 'AI, security & software', color: '#6ea8ff', href: 'https://github.com/VeldanDev' },
   { icon: GraduationCap, title: 'Tech educator', meta: '@veldorable · explaining tech', color: C.live, href: 'https://www.tiktok.com/@veldorable' },
 ];
 
 /* Credentials being pursued — honestly marked, filled with real badges as earned */
 const PURSUING = [
-  { name: 'Cisco — Ethical Hacker', track: 'Security', status: 'in progress', color: C.cyan },
-  { name: 'TryHackMe — Learning Path', track: 'Security', status: 'in progress', color: C.cyan },
-  { name: 'Kaggle — Intro to ML', track: 'AI / ML', status: 'planned', color: C.violet },
-  { name: 'freeCodeCamp — ML with Python', track: 'AI / ML', status: 'planned', color: C.violet },
-  { name: 'Google — Cybersecurity Certificate', track: 'Security', status: 'planned', color: C.cyan },
-  { name: 'Microsoft Learn — Azure Fundamentals', track: 'Cloud', status: 'planned', color: '#6ea8ff' },
+  { name: 'Cisco Ethical Hacker', track: 'Security', status: 'in progress', color: C.cyan },
+  { name: 'TryHackMe learning path', track: 'Security', status: 'in progress', color: C.cyan },
+  { name: 'Kaggle: Intro to Machine Learning', track: 'AI / ML', status: 'planned', color: C.violet },
+  { name: 'freeCodeCamp: ML with Python', track: 'AI / ML', status: 'planned', color: C.violet },
+  { name: 'Google Cybersecurity Certificate', track: 'Security', status: 'planned', color: C.cyan },
+  { name: 'Microsoft Azure Fundamentals', track: 'Cloud', status: 'planned', color: '#6ea8ff' },
 ];
 
 export default function AchievementsPage() {
