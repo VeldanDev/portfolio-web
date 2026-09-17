@@ -24,11 +24,12 @@ function relativeTime(iso?: string): string {
   if (mins < 60) return `${mins}m ago`;
   const hrs = Math.floor(mins / 60);
   if (hrs < 24)  return `${hrs}h ago`;
-  return new Date(iso).toLocaleDateString();
+  // Fixed locale + options so server and client render the same string (no hydration mismatch).
+  return new Date(iso).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
 function fmt(n?: number): string {
-  return (n ?? 0).toLocaleString();
+  return (n ?? 0).toLocaleString('en-US');
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
@@ -336,7 +337,7 @@ export default function DashboardClient({ github, wakatime }: Props) {
         {/* Last updated badge */}
         <div className="inline-flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse shrink-0" />
-          <span className="text-[11px] text-[#3d3d3d] tracking-wide">
+          <span className="text-[11px] text-[#3d3d3d] tracking-wide" suppressHydrationWarning>
             Updated {relativeTime(updatedAt)}
           </span>
         </div>
