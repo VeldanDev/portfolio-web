@@ -24,7 +24,7 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Aditya Surya Putra — AI & Security Engineer',
+  title: 'Aditya Surya Putra · AI & Security Engineer',
   description:
     'AI Engineer, Cybersecurity Engineer, and Software Developer. I build autonomous AI agents, offensive security tooling, and production software.',
 };

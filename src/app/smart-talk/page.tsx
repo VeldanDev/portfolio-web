@@ -16,39 +16,39 @@ interface Message {
 
 const PATTERNS: { regex: RegExp; response: string }[] = [
   {
-    regex: /project|built|shift.?drive|work|portfolio/i,
+    regex: /project|built|scepter|spencer|work|portfolio|agent/i,
     response:
-      "Here's what I've built so far:\n\n• Shift Drives — A full-stack digital agency platform built with Next.js. Features 132+ templates, a tiered pricing system, and a WhatsApp-integrated consultation flow. Live at shift-drives.vercel.app\n\nMore projects are in the works — currently building IoT and networking tools. Check the /projects page for the full list.",
+      "A few things I've shipped:\n\n• Scepter, a CLI on npm that checks whether an MCP server is alive, maintained, and safe before an agent trusts it.\n• SpencerWeb, a web vulnerability scanner mapped to the OWASP Top 10, with a dashboard and PDF reports.\n• An autonomous AI agent with 18 tools that runs real workflows on its own.\n• Specter 2.0, a CLI OSINT and recon framework.\n\nThe full list is on the /projects page.",
   },
   {
     regex: /stack|skill|tech|language|framework|tools|use|know/i,
     response:
-      "My current tech stack:\n\nLanguages: Python, C/C++, TypeScript, Bash\nFrameworks: Next.js, React, FastAPI\nTools: Linux, Git, Docker, Wireshark, VS Code, Tinkercad\nHardware: ESP32, Raspberry Pi, Arduino\n\nCurrently learning: Rust, Kubernetes, Reverse Engineering.\n\nHead to /about for the full breakdown.",
+      "My stack:\n\nLanguages: Python, TypeScript, JavaScript, PHP, C/C++, Bash, SQL\nAI: LLM agents, tool-use, TensorFlow, MCP\nSecurity: OSINT, recon, OWASP, Burp\nWeb: Next.js, React, Node, Prisma, Supabase, Linux, Docker\n\nThe full breakdown is on /about.",
   },
   {
-    regex: /intern|available|hire|opportunit|open.?to|looking/i,
+    regex: /intern|available|hire|opportunit|open.?to|looking|job|work with/i,
     response:
-      "Yes — I'm actively looking for internship opportunities!\n\nI'm a Computer Engineering student at Politeknik Negeri Medan with hands-on experience in embedded systems, networking, and full-stack web development.\n\nIf you have an opportunity that fits, reach out via the /contact page or WhatsApp at +62 895-328-615-374.",
+      "Yes, I'm open to roles and internships in AI engineering, cybersecurity, and software development.\n\nI ship real tools, not just demos, and I learn fast. If you have something that fits, reach me on the /contact page or on WhatsApp.",
   },
   {
     regex: /contact|email|reach|message|dm|whatsapp|talk.?to/i,
     response:
-      "You can reach me through:\n\n• WhatsApp: +62 895-328-615-374\n• GitHub: github.com/VeldanDev\n• TikTok: @veldorable\n• Or use the contact form at /contact\n\nI typically respond within 24 hours.",
+      "You can reach me at:\n\n• GitHub: github.com/VeldanDev\n• TikTok: @veldorable\n• Or the contact form at /contact\n\nI usually reply within a day.",
   },
   {
-    regex: /study|university|college|school|politeknik|medan/i,
+    regex: /study|university|college|school|politeknik|medan|who|about/i,
     response:
-      "I'm currently studying Computer Engineering at Politeknik Negeri Medan, Indonesia.\n\nMy coursework spans embedded systems, computer networking, and software engineering. Outside of class I build projects, break things, and document what I learn.",
+      "I'm Aditya, an AI and security engineer based in Medan, Indonesia. I build autonomous agents, security tooling, and full-stack software.\n\nI'm a Computer Engineering student at Politeknik Negeri Medan, which gave me the low-level grounding, and mostly self-taught by shipping. More on /about.",
   },
 ];
 
 const DEFAULT_RESPONSE =
-  "I don't have a specific answer for that yet — my responses are still static.\n\nTry asking about my projects, tech stack, internship availability, or how to contact me. AI-powered responses are coming soon!";
+  "I don't have a scripted answer for that one yet. These replies are still rule-based, not a live model.\n\nTry asking about my projects, my stack, whether I'm open to work, or how to reach me.";
 
 const SUGGESTED = [
-  "What projects have you built?",
-  "What's your tech stack?",
-  "Are you available for internship?",
+  "What have you built?",
+  "What's your stack?",
+  "Are you open to work?",
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -192,7 +192,7 @@ export default function SmartTalkPage() {
         <div className="flex items-center gap-2 px-4 py-3 border-b border-[#1f1f1f] bg-[#0d0d0d]">
           <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse" />
           <span className="text-[10px] tracking-widest text-[#3d3d3d] uppercase">
-            aditya.dev — static responses
+            aditya.dev · rule-based
           </span>
         </div>
 
@@ -213,7 +213,7 @@ export default function SmartTalkPage() {
               </div>
               <div className="text-center">
                 <p className="text-sm text-[#f1f1f1] mb-1">Hi, I&apos;m Aditya&apos;s assistant.</p>
-                <p className="text-xs text-[#6b7280]">Ask me anything — or pick a suggestion below.</p>
+                <p className="text-xs text-[#6b7280]">Ask me anything, or pick a suggestion below.</p>
               </div>
               <div className="flex flex-col gap-2 w-full max-w-xs">
                 {SUGGESTED.map((q, i) => (
@@ -351,7 +351,7 @@ export default function SmartTalkPage() {
         className="flex items-center justify-center gap-1.5 mt-4 text-[11px] text-[#3d3d3d]"
       >
         <Zap size={11} strokeWidth={1.5} />
-        Powered by static responses — AI integration coming soon
+        Rule-based for now. Live AI is on the way.
       </motion.p>
     </div>
   );
