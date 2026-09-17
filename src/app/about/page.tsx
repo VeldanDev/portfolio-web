@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Cpu, ShieldHalf, Boxes, Workflow } from 'lucide-react';
+import CountUp from '@/components/CountUp';
 
 const C = {
   bg: '#0a0b0e', panel: '#101218', panel2: '#0d0f14', line: '#1c2029', line2: '#242a35',
@@ -13,10 +14,10 @@ const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 const view = { once: true, margin: '-60px' } as const;
 
 const STATS = [
-  { label: 'Years building', value: '3+', color: C.violet },
-  { label: 'Public repos', value: '25', color: C.cyan },
-  { label: 'On npm', value: '2', color: C.blue },
-  { label: 'Live products', value: '3', color: '#3ee6a0' },
+  { label: 'Years building', num: 3, suffix: '+', color: C.violet },
+  { label: 'Public repos', num: 25, suffix: '', color: C.cyan },
+  { label: 'On npm', num: 2, suffix: '', color: C.blue },
+  { label: 'Live products', num: 3, suffix: '', color: '#3ee6a0' },
 ];
 
 const FOCUS = [
@@ -55,7 +56,7 @@ export default function AboutPage() {
               <motion.div key={s.label} variants={fadeUp} initial="hidden" whileInView="visible" viewport={view}
                 transition={{ delay: k * 0.06, duration: 0.5, ease }}
                 className="rounded-xl border p-5" style={{ borderColor: C.line, background: C.panel }}>
-                <div className="text-3xl font-bold tracking-tight" style={{ color: s.color, fontFamily: 'var(--font-display)' }}>{s.value}</div>
+                <div className="text-3xl font-bold tracking-tight" style={{ color: s.color, fontFamily: 'var(--font-display)' }}><CountUp to={s.num} suffix={s.suffix} /></div>
                 <div className="text-xs mt-1" style={{ color: C.muted }}>{s.label}</div>
               </motion.div>
             ))}
