@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/goo
 import './globals.css';
 import Sidebar from '@/components/layout/Sidebar';
 import MobileNav from '@/components/layout/MobileNav';
+import CommandPalette from '@/components/CommandPalette';
 
 const display = Bricolage_Grotesque({
   variable: '--font-display',
@@ -40,6 +41,7 @@ export default function RootLayout({
       <body className="min-h-full bg-[#0a0b0e]">
         <Sidebar />
         <MobileNav />
+        <CommandPalette />
         <main className="md:ml-[240px] pb-[60px] md:pb-0">
           {children}
         </main>

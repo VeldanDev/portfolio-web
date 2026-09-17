@@ -150,7 +150,7 @@
 
   html {
     scroll-behavior: smooth;
-    font-family: var(--font-mono);
+    font-family: var(--font-sans-body), ui-sans-serif, system-ui, sans-serif;
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -159,7 +159,7 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-mono);
+    font-family: var(--font-sans-body), ui-sans-serif, system-ui, sans-serif;
     min-height: 100dvh;
     /* Dot-grid background pattern */
     background-image: radial-gradient(
@@ -204,20 +204,18 @@
 
   /* ── Typography ── */
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-mono);
-    font-weight: 600;
+    font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
     letter-spacing: -0.02em;
     color: var(--text-primary);
   }
 
-  p, li, span {
-    font-family: var(--font-mono);
+  p, li {
     line-height: 1.7;
-    color: var(--foreground);
   }
 
   code, pre, kbd, samp {
-    font-family: var(--font-mono);
+    font-family: var(--font-plex-mono), var(--font-mono);
     font-size: 0.9em;
   }
 
@@ -255,6 +253,9 @@
 .spec-btn:active  { transform: translateY(0) scale(.99); }
 .spec-card:hover  { border-color: #2b3240 !important; }
 
+@keyframes spec-pop { from { opacity: 0; transform: translateY(-8px) scale(0.98); } to { opacity: 1; transform: none; } }
+.spec-cmdk { animation: spec-pop 0.2s cubic-bezier(.23,1,.32,1); }
+
 ::selection { background-color: rgba(139,124,255,0.25); color: #eaecef; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -263,4 +264,5 @@
   .spec-sweep { animation: none; opacity: 0.5; }
   .spec-caret { animation: none; }
   .spec-pulse { animation: none; }
+  .spec-cmdk  { animation: none; }
 }
