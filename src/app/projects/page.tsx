@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import Image from 'next/image';
 import { GitBranch, ArrowUpRight } from 'lucide-react';
+import CountUp from '@/components/CountUp';
 
 /* ── Spectral palette ────────────────────────────────────────────────────── */
 const C = {
@@ -211,7 +212,7 @@ export default function ProjectsPage() {
             { v: counts.security, l: 'Security', c: C.cyan },
           ].map((s, k) => (
             <div key={s.l} className={`px-4 py-4 ${k ? 'border-l' : ''}`} style={{ borderColor: C.line }}>
-              <div className="text-2xl font-bold tabular-nums" style={{ color: s.c, fontFamily: 'var(--font-display)' }}>{s.v}</div>
+              <div className="text-2xl font-bold tabular-nums" style={{ color: s.c, fontFamily: 'var(--font-display)' }}><CountUp to={s.v} /></div>
               <div className="text-[11px] mt-0.5" style={{ color: C.dim }}>{s.l}</div>
             </div>
           ))}
