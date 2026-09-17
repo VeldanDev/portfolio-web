@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowUpRight, GitBranch, Boxes, ShieldHalf, Cpu } from 'lucide-react';
 
 /* ── Spectral palette (local, self-contained) ───────────────────────────── */
@@ -50,7 +51,8 @@ function DecodeName({ text }: { text: string }) {
       else node.textContent = text;
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    const safety = setTimeout(() => { node.textContent = text; }, DURATION + 250);
+    return () => { cancelAnimationFrame(raf); clearTimeout(safety); };
   }, [text]);
 
   return <span ref={ref} aria-label={text}>{text}</span>;
@@ -299,8 +301,7 @@ export default function Home() {
               <CyclingRole />
             </div>
 
-            <motion.p
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35, duration: 0.6 }}
+            <p
               className="max-w-lg text-[15px] leading-[1.85] mb-8" style={{ color: C.muted }}
             >
               I build at the edge of intelligence and security. My work spans{' '}
@@ -309,19 +310,17 @@ export default function Home() {
               vulnerability scanning), and{' '}
               <span style={{ color: C.text }}>production software</span>. I ship real tools that
               people actually run, not just demos.
-            </motion.p>
+            </p>
 
             <div className="flex flex-wrap gap-2 mb-9">
-              {STACK.map((s, k) => (
-                <motion.span
+              {STACK.map((s) => (
+                <span
                   key={s}
-                  initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.45 + k * 0.05, duration: 0.4 }}
                   className="px-3 py-1 text-xs rounded-md border"
                   style={{ borderColor: C.line, background: C.panel2, color: C.muted, fontFamily: 'var(--font-plex-mono)' }}
                 >
                   {s}
-                </motion.span>
+                </span>
               ))}
             </div>
 
@@ -344,13 +343,30 @@ export default function Home() {
             </div>
           </div>
 
-          {/* signal panel */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25, duration: 0.6, ease }}
-          >
+          {/* photo + signal panel */}
+          <div className="flex flex-col gap-4">
+            {/* spectral-framed portrait */}
+            <div className="group relative mx-auto lg:mx-0 w-full max-w-[260px]">
+              <div className="rounded-2xl p-[1.5px]" style={{ background: SPECTRAL }}>
+                <div className="relative rounded-2xl overflow-hidden" style={{ background: C.panel2 }}>
+                  <Image
+                    src="/avatar.jpg"
+                    alt="Aditya Surya Putra"
+                    width={260}
+                    height={300}
+                    priority
+                    className="w-full h-auto object-cover grayscale group-hover:grayscale-0 transition-[filter] duration-500"
+                  />
+                  {/* spectral wash */}
+                  <div
+                    className="pointer-events-none absolute inset-0 opacity-30 group-hover:opacity-0 transition-opacity duration-500"
+                    style={{ background: 'linear-gradient(200deg, transparent 40%, rgba(10,11,14,0.55))' }}
+                  />
+                </div>
+              </div>
+            </div>
             <SignalPanel />
-          </motion.div>
+          </div>
         </div>
       </section>
 
