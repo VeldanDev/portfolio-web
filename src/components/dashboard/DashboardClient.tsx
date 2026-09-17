@@ -37,8 +37,8 @@ function fmt(n?: number): string {
 function SectionLabel({ sub, title }: { sub: string; title: string }) {
   return (
     <div className="mb-6">
-      <p className="text-[10px] uppercase tracking-widest text-[#3d3d3d] mb-1">{sub}</p>
-      <h2 className="text-lg font-semibold text-[#f1f1f1] tracking-tight">{title}</h2>
+      <p className="text-[10px] uppercase tracking-widest text-[#565c66] mb-1">{sub}</p>
+      <h2 className="text-lg font-semibold text-[#eaecef] tracking-tight">{title}</h2>
     </div>
   );
 }
@@ -65,19 +65,19 @@ function StatCard({
       whileInView="visible"
       viewport={view}
       transition={t(delay)}
-      className="flex flex-col gap-2 p-4 rounded-lg border border-[#1f1f1f] bg-[#111111]"
+      className="flex flex-col gap-2 p-4 rounded-lg border border-[#1c2029] bg-[#101218]"
     >
       <div className="flex items-center justify-between">
-        <p className="text-[10px] uppercase tracking-widest text-[#3d3d3d]">{label}</p>
-        <Icon size={13} strokeWidth={1.5} className="text-[#3d3d3d]" />
+        <p className="text-[10px] uppercase tracking-widest text-[#565c66]">{label}</p>
+        <Icon size={13} strokeWidth={1.5} className="text-[#565c66]" />
       </div>
       <p
         className="text-2xl font-semibold tracking-tight tabular-nums"
-        style={{ color: accent ?? '#f1f1f1' }}
+        style={{ color: accent ?? '#eaecef' }}
       >
         {value}
       </p>
-      {sub && <p className="text-[11px] text-[#3d3d3d] mt-auto">{sub}</p>}
+      {sub && <p className="text-[11px] text-[#565c66] mt-auto">{sub}</p>}
     </motion.div>
   );
 }
@@ -102,18 +102,18 @@ function LanguageBar({
       transition={t(delay)}
       className="flex items-center gap-3"
     >
-      <span className="w-24 shrink-0 text-xs text-[#6b7280] truncate">{name}</span>
-      <div className="flex-1 h-1.5 rounded-full bg-[#1a1a1a] overflow-hidden">
+      <span className="w-24 shrink-0 text-xs text-[#8a9099] truncate">{name}</span>
+      <div className="flex-1 h-1.5 rounded-full bg-[#161a20] overflow-hidden">
         <motion.div
           className="h-full rounded-full"
-          style={{ backgroundColor: color ?? '#4ade80' }}
+          style={{ backgroundColor: color ?? '#8b7cff' }}
           initial={{ width: 0 }}
           whileInView={{ width: `${percentage}%` }}
           viewport={view}
           transition={{ duration: 0.7, delay: delay + 0.1, ease: 'easeOut' }}
         />
       </div>
-      <span className="w-10 shrink-0 text-right text-[11px] text-[#6b7280] tabular-nums">
+      <span className="w-10 shrink-0 text-right text-[11px] text-[#8a9099] tabular-nums">
         {percentage.toFixed(1)}%
       </span>
     </motion.div>
@@ -122,7 +122,7 @@ function LanguageBar({
 
 function EmptyState({ message }: { message: string }) {
   return (
-    <p className="text-xs text-[#3d3d3d] py-4 text-center">{message}</p>
+    <p className="text-xs text-[#565c66] py-4 text-center">{message}</p>
   );
 }
 
@@ -144,16 +144,16 @@ function ComingSoonCard({
       whileInView="visible"
       viewport={view}
       transition={t(delay)}
-      className="flex flex-col gap-3 p-5 rounded-lg border border-dashed border-[#1f1f1f]
-                 bg-[#111111] opacity-60"
+      className="flex flex-col gap-3 p-5 rounded-lg border border-dashed border-[#1c2029]
+                 bg-[#101218] opacity-60"
     >
       <div className="flex items-center gap-2">
-        <Icon size={14} strokeWidth={1.5} className="text-[#3d3d3d]" />
-        <p className="text-xs font-medium text-[#3d3d3d] uppercase tracking-widest">{title}</p>
+        <Icon size={14} strokeWidth={1.5} className="text-[#565c66]" />
+        <p className="text-xs font-medium text-[#565c66] uppercase tracking-widest">{title}</p>
       </div>
-      <p className="text-sm text-[#3d3d3d]">{description}</p>
-      <span className="self-start mt-1 px-2 py-0.5 text-[10px] rounded border border-[#1f1f1f]
-                       text-[#3d3d3d] tracking-widest uppercase">
+      <p className="text-sm text-[#565c66]">{description}</p>
+      <span className="self-start mt-1 px-2 py-0.5 text-[10px] rounded border border-[#1c2029]
+                       text-[#565c66] tracking-widest uppercase">
         coming soon
       </span>
     </motion.div>
@@ -163,11 +163,11 @@ function ComingSoonCard({
 // ─── Contribution heatmap ─────────────────────────────────────────────────────
 
 const LEVEL_COLORS: Record<0 | 1 | 2 | 3 | 4, string> = {
-  0: '#1a1a1a',
-  1: '#0e4429',
-  2: '#006d32',
-  3: '#26a641',
-  4: '#39d353',
+  0: '#161a20',
+  1: '#20263f',
+  2: '#3a4f8f',
+  3: '#5b8fd0',
+  4: '#45e0d0',
 };
 
 const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -218,9 +218,9 @@ function ContributionHeatmap({ weeks }: { weeks?: GitHubContributionWeek[] }) {
       whileInView="visible"
       viewport={view}
       transition={t(0.15)}
-      className="p-5 rounded-lg border border-[#1f1f1f] bg-[#111111]"
+      className="p-5 rounded-lg border border-[#1c2029] bg-[#101218]"
     >
-      <p className="text-[10px] uppercase tracking-widest text-[#3d3d3d] mb-4">
+      <p className="text-[10px] uppercase tracking-widest text-[#565c66] mb-4">
         contribution calendar
       </p>
 
@@ -236,7 +236,7 @@ function ContributionHeatmap({ weeks }: { weeks?: GitHubContributionWeek[] }) {
                 className="flex items-center justify-end"
               >
                 {label && (
-                  <span className="text-[9px] leading-none text-[#3d3d3d]">{label}</span>
+                  <span className="text-[9px] leading-none text-[#565c66]">{label}</span>
                 )}
               </div>
             ))}
@@ -249,7 +249,7 @@ function ContributionHeatmap({ weeks }: { weeks?: GitHubContributionWeek[] }) {
               {monthLabels.map(({ left, label }) => (
                 <span
                   key={label + left}
-                  className="absolute text-[9px] text-[#3d3d3d]"
+                  className="absolute text-[9px] text-[#565c66]"
                   style={{ left }}
                 >
                   {label}
@@ -285,21 +285,21 @@ function ContributionHeatmap({ weeks }: { weeks?: GitHubContributionWeek[] }) {
       </div>
 
       {/* Status bar: tooltip text + legend */}
-      <div className="mt-3 pt-3 border-t border-[#1f1f1f] flex items-center justify-between gap-4">
-        <span className="text-[11px] text-[#3d3d3d] truncate">
+      <div className="mt-3 pt-3 border-t border-[#1c2029] flex items-center justify-between gap-4">
+        <span className="text-[11px] text-[#565c66] truncate">
           {hovered
             ? `${fmtDay(hovered.date)}: ${hovered.count} contribution${hovered.count !== 1 ? 's' : ''}`
             : 'Hover a day to see details'}
         </span>
         <div className="flex items-center gap-1.5 shrink-0">
-          <span className="text-[9px] text-[#3d3d3d]">Less</span>
+          <span className="text-[9px] text-[#565c66]">Less</span>
           {([0, 1, 2, 3, 4] as const).map((lvl) => (
             <div
               key={lvl}
               style={{ width: 9, height: 9, borderRadius: 2, backgroundColor: LEVEL_COLORS[lvl] }}
             />
           ))}
-          <span className="text-[9px] text-[#3d3d3d]">More</span>
+          <span className="text-[9px] text-[#565c66]">More</span>
         </div>
       </div>
     </motion.div>
@@ -328,16 +328,16 @@ export default function DashboardClient({ github, wakatime }: Props) {
         transition={t()}
         className="mb-14"
       >
-        <p className="text-[10px] uppercase tracking-widest text-[#3d3d3d] mb-2">/ dashboard</p>
-        <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-[#f1f1f1] mb-3">
+        <p className="text-[10px] uppercase tracking-widest text-[#565c66] mb-2">/ dashboard</p>
+        <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-[#eaecef] mb-3">
           Dashboard
         </h1>
-        <p className="text-sm text-[#6b7280] mb-4">Real-time proof of work.</p>
+        <p className="text-sm text-[#8a9099] mb-4">Real-time proof of work.</p>
 
         {/* Last updated badge */}
         <div className="inline-flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse shrink-0" />
-          <span className="text-[11px] text-[#3d3d3d] tracking-wide" suppressHydrationWarning>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#8b7cff] animate-pulse shrink-0" />
+          <span className="text-[11px] text-[#565c66] tracking-wide" suppressHydrationWarning>
             Updated {relativeTime(updatedAt)}
           </span>
         </div>
@@ -363,7 +363,7 @@ export default function DashboardClient({ github, wakatime }: Props) {
                 value={fmt(github.totalContributions)}
                 sub="last year"
                 icon={Activity}
-                accent="#4ade80"
+                accent="#8b7cff"
                 delay={0}
               />
               <StatCard
@@ -418,9 +418,9 @@ export default function DashboardClient({ github, wakatime }: Props) {
                 whileInView="visible"
                 viewport={view}
                 transition={t(0.1)}
-                className="p-5 rounded-lg border border-[#1f1f1f] bg-[#111111]"
+                className="p-5 rounded-lg border border-[#1c2029] bg-[#101218]"
               >
-                <p className="text-[10px] uppercase tracking-widest text-[#3d3d3d] mb-4">
+                <p className="text-[10px] uppercase tracking-widest text-[#565c66] mb-4">
                   top languages
                 </p>
                 <div className="flex flex-col gap-3">
@@ -466,20 +466,20 @@ export default function DashboardClient({ github, wakatime }: Props) {
                 whileInView="visible"
                 viewport={view}
                 transition={t(0)}
-                className="flex flex-col gap-2 p-5 rounded-lg border border-[#1f1f1f] bg-[#111111]"
+                className="flex flex-col gap-2 p-5 rounded-lg border border-[#1c2029] bg-[#101218]"
               >
                 <div className="flex items-center justify-between">
-                  <p className="text-[10px] uppercase tracking-widest text-[#3d3d3d]">
+                  <p className="text-[10px] uppercase tracking-widest text-[#565c66]">
                     Total Coding Time
                   </p>
-                  <Clock size={13} strokeWidth={1.5} className="text-[#3d3d3d]" />
+                  <Clock size={13} strokeWidth={1.5} className="text-[#565c66]" />
                 </div>
-                <p className="text-3xl font-semibold tracking-tight text-[#4ade80] mt-1">
+                <p className="text-3xl font-semibold tracking-tight text-[#8b7cff] mt-1">
                   {wakatime.totalText}
                 </p>
                 <div className="flex items-center gap-1.5 mt-auto">
-                  <span className="px-2 py-0.5 text-[10px] rounded border border-[#1f1f1f]
-                                   bg-[#0a0a0a] text-[#3d3d3d] tracking-wider uppercase">
+                  <span className="px-2 py-0.5 text-[10px] rounded border border-[#1c2029]
+                                   bg-[#0a0b0e] text-[#565c66] tracking-wider uppercase">
                     last {wakatime.rangeDays} days
                   </span>
                 </div>
@@ -491,18 +491,18 @@ export default function DashboardClient({ github, wakatime }: Props) {
                 whileInView="visible"
                 viewport={view}
                 transition={t(0.08)}
-                className="flex flex-col gap-2 p-5 rounded-lg border border-[#1f1f1f] bg-[#111111]"
+                className="flex flex-col gap-2 p-5 rounded-lg border border-[#1c2029] bg-[#101218]"
               >
                 <div className="flex items-center justify-between">
-                  <p className="text-[10px] uppercase tracking-widest text-[#3d3d3d]">
+                  <p className="text-[10px] uppercase tracking-widest text-[#565c66]">
                     Daily Average
                   </p>
-                  <Timer size={13} strokeWidth={1.5} className="text-[#3d3d3d]" />
+                  <Timer size={13} strokeWidth={1.5} className="text-[#565c66]" />
                 </div>
-                <p className="text-3xl font-semibold tracking-tight text-[#38bdf8] mt-1">
+                <p className="text-3xl font-semibold tracking-tight text-[#6ea8ff] mt-1">
                   {wakatime.dailyAverageText}
                 </p>
-                <p className="text-[11px] text-[#3d3d3d] mt-auto">per day average</p>
+                <p className="text-[11px] text-[#565c66] mt-auto">per day average</p>
               </motion.div>
             </div>
 
@@ -514,9 +514,9 @@ export default function DashboardClient({ github, wakatime }: Props) {
                 whileInView="visible"
                 viewport={view}
                 transition={t(0.1)}
-                className="p-5 rounded-lg border border-[#1f1f1f] bg-[#111111] mb-4"
+                className="p-5 rounded-lg border border-[#1c2029] bg-[#101218] mb-4"
               >
-                <p className="text-[10px] uppercase tracking-widest text-[#3d3d3d] mb-4">
+                <p className="text-[10px] uppercase tracking-widest text-[#565c66] mb-4">
                   languages
                 </p>
                 <div className="flex flex-col gap-3">
@@ -543,9 +543,9 @@ export default function DashboardClient({ github, wakatime }: Props) {
                     whileInView="visible"
                     viewport={view}
                     transition={t(0.12)}
-                    className="p-5 rounded-lg border border-[#1f1f1f] bg-[#111111]"
+                    className="p-5 rounded-lg border border-[#1c2029] bg-[#101218]"
                   >
-                    <p className="text-[10px] uppercase tracking-widest text-[#3d3d3d] mb-4">
+                    <p className="text-[10px] uppercase tracking-widest text-[#565c66] mb-4">
                       editors
                     </p>
                     <div className="flex flex-col gap-3">
@@ -568,9 +568,9 @@ export default function DashboardClient({ github, wakatime }: Props) {
                     whileInView="visible"
                     viewport={view}
                     transition={t(0.16)}
-                    className="p-5 rounded-lg border border-[#1f1f1f] bg-[#111111]"
+                    className="p-5 rounded-lg border border-[#1c2029] bg-[#101218]"
                   >
-                    <p className="text-[10px] uppercase tracking-widest text-[#3d3d3d] mb-4">
+                    <p className="text-[10px] uppercase tracking-widest text-[#565c66] mb-4">
                       operating systems
                     </p>
                     <div className="flex flex-col gap-3">
