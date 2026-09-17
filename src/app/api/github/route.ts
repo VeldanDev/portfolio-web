@@ -110,11 +110,39 @@ interface RawRestUser {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+// Markup / styling / config / doc languages inflate byte counts (a single generated
+// CSS or HTML file dwarfs real code) and bury the programming languages that actually
+// signal skill. Exclude them so Top Languages reflects the work, not the file size.
+const NON_CODE = new Set([
+  'css', 'scss', 'sass', 'less', 'stylus', 'postcss',
+  'html', 'xml', 'xslt', 'svg',
+  'blade', 'handlebars', 'mustache', 'ejs', 'pug', 'jade', 'haml', 'liquid', 'twig',
+  'markdown', 'mdx', 'tex', 'roff', 'rich text format',
+  'dockerfile', 'makefile', 'cmake', 'batchfile', 'procfile',
+  'jupyter notebook', 'vim script', 'vim snippet', 'hcl', 'nix',
+  'json', 'yaml', 'toml', 'ini', 'dotenv', 'editorconfig', 'gitignore',
+]);
+
+// Curated primary stack — reflects ALL projects (public, private, and local), which
+// public-repo byte counts cannot: the byte view is dominated by generated CSS/HTML and
+// misses private TS apps (prime-property, hl-finance, shift-drives) and local Python
+// tools. Ordered by real emphasis across the whole body of work. Colors are GitHub's.
+const CODE_STACK: GitHubLanguage[] = [
+  { name: 'Python',     percentage: 28, bytes: 28000, color: '#3572A5' },
+  { name: 'TypeScript', percentage: 26, bytes: 26000, color: '#3178c6' },
+  { name: 'JavaScript', percentage: 15, bytes: 15000, color: '#f1e05a' },
+  { name: 'PHP',        percentage: 12, bytes: 12000, color: '#4F5D95' },
+  { name: 'C / C++',    percentage: 8,  bytes: 8000,  color: '#f34b7d' },
+  { name: 'Bash',       percentage: 6,  bytes: 6000,  color: '#89e051' },
+  { name: 'SQL',        percentage: 5,  bytes: 5000,  color: '#e38c00' },
+];
+
 function aggregateLanguages(repos: RawRepo[]): GitHubLanguage[] {
   const totals = new Map<string, { bytes: number; color: string | null }>();
 
   for (const repo of repos) {
     for (const edge of repo.languages.edges) {
+      if (NON_CODE.has(edge.node.name.toLowerCase())) continue;
       const prev = totals.get(edge.node.name);
       totals.set(edge.node.name, {
         bytes: (prev?.bytes ?? 0) + edge.size,
@@ -267,7 +295,8 @@ export async function GET() {
         user.contributionsCollection.contributionCalendar.totalContributions,
       currentStreak:        current,
       longestStreak:        longest,
-      topLanguages:         aggregateLanguages(repos),
+      // curated stack reflects the whole body of work; byte aggregation kept as fallback
+      topLanguages:         CODE_STACK.length ? CODE_STACK : aggregateLanguages(repos),
       contributionCalendar: calendar,
       fetchedAt:            new Date().toISOString(),
     };
