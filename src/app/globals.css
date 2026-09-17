@@ -238,3 +238,29 @@
     border-radius: calc(var(--radius) * 0.6);
   }
 }
+
+/* ─── Spectral motion system (home) — GPU only: transform / opacity ──────── */
+
+@keyframes spec-eq   { from { transform: scaleY(0.18); } to { transform: scaleY(1); } }
+@keyframes spec-sweep{ 0% { transform: translateX(-120%); } 100% { transform: translateX(420%); } }
+@keyframes spec-blink{ 0%,50% { opacity: 1; } 50.01%,100% { opacity: 0; } }
+@keyframes spec-pulse{ 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.45; transform: scale(0.82); } }
+
+.spec-bar    { height: 100%; animation: spec-eq 1.35s cubic-bezier(.23,1,.32,1) infinite alternate; }
+.spec-sweep  { animation: spec-sweep 2.6s cubic-bezier(.23,1,.32,1) infinite; will-change: transform; }
+.spec-caret  { display: inline-block; width: 2px; height: 1.05em; margin-left: 4px; vertical-align: middle; animation: spec-blink 1.05s steps(1) infinite; }
+.spec-pulse  { animation: spec-pulse 1.9s ease-in-out infinite; }
+.spec-btn    { transition: transform .25s cubic-bezier(.23,1,.32,1), filter .25s ease; }
+.spec-btn:hover   { transform: translateY(-1px); filter: brightness(1.08) saturate(1.05); }
+.spec-btn:active  { transform: translateY(0) scale(.99); }
+.spec-card:hover  { border-color: #2b3240 !important; }
+
+::selection { background-color: rgba(139,124,255,0.25); color: #eaecef; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .spec-bar   { animation: none; transform: scaleY(0.6); }
+  .spec-sweep { animation: none; opacity: 0.5; }
+  .spec-caret { animation: none; }
+  .spec-pulse { animation: none; }
+}

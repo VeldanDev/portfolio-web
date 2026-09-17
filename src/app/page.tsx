@@ -1,489 +1,461 @@
 'use client';
 
-import { motion, useInView, animate } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import {
-  MapPin, ExternalLink, GitBranch, ArrowRight,
-  Activity, Globe, LayoutDashboard,
-} from 'lucide-react';
+import { ArrowUpRight, GitBranch, Boxes, ShieldHalf, Cpu } from 'lucide-react';
 
-// ─── Cycling typer ────────────────────────────────────────────────────────────
+/* ── Spectral palette (local, self-contained) ───────────────────────────── */
+const C = {
+  bg: '#0a0b0e',
+  panel: '#101218',
+  panel2: '#0d0f14',
+  line: '#1c2029',
+  line2: '#242a35',
+  text: '#eaecef',
+  muted: '#8a9099',
+  dim: '#565c66',
+  violet: '#8b7cff',
+  cyan: '#45e0d0',
+  live: '#3ee6a0',
+  wip: '#f5a524',
+};
+const SPECTRAL = 'linear-gradient(90deg,#8b7cff 0%,#6ea8ff 45%,#45e0d0 100%)';
 
-const ROLES = [
-  'Computer Engineering Student',
-  'Embedded Systems Developer',
-  'Web Developer',
-  'IoT Enthusiast',
-];
+/* ── Name decode: rAF writes textContent (no per-frame React state) ──────── */
+const GLYPHS = '01<>/\\{}#$%&*+=ABCDEF';
 
-type Phase = 'typing' | 'pausing' | 'erasing';
-
-function CyclingTyper() {
-  const [idx, setIdx]         = useState(0);
-  const [charIdx, setCharIdx] = useState(0);
-  const [phase, setPhase]     = useState<Phase>('typing');
-
-  const phrase    = ROLES[idx];
-  const displayed = phrase.slice(0, charIdx);
+function DecodeName({ text }: { text: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>;
-    switch (phase) {
-      case 'typing':
-        if (charIdx < phrase.length) {
-          timer = setTimeout(() => setCharIdx((c) => c + 1), 58);
-        } else {
-          timer = setTimeout(() => setPhase('pausing'), 80);
-        }
-        break;
-      case 'pausing':
-        timer = setTimeout(() => setPhase('erasing'), 2400);
-        break;
-      case 'erasing':
-        if (charIdx > 0) {
-          timer = setTimeout(() => setCharIdx((c) => c - 1), 32);
-        } else {
-          setIdx((i) => (i + 1) % ROLES.length);
-          setPhase('typing');
-        }
-        break;
+    const node = ref.current;
+    if (!node) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { node.textContent = text; return; }
+
+    const DURATION = 900;
+    const start = performance.now();
+    let raf = 0;
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / DURATION);
+      const revealed = Math.floor(p * text.length);
+      let out = '';
+      for (let i = 0; i < text.length; i++) {
+        if (text[i] === ' ') { out += ' '; continue; }
+        out += i < revealed ? text[i] : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+      }
+      node.textContent = out;
+      if (p < 1) raf = requestAnimationFrame(tick);
+      else node.textContent = text;
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [text]);
+
+  return <span ref={ref} aria-label={text}>{text}</span>;
+}
+
+/* ── Cycling role ────────────────────────────────────────────────────────── */
+const ROLES = ['AI Engineer', 'Cybersecurity Engineer', 'Software Developer', 'Security-tool Builder'];
+
+function CyclingRole() {
+  const [i, setI] = useState(0);
+  const [n, setN] = useState(0);
+  const [mode, setMode] = useState<'type' | 'hold' | 'erase'>('type');
+  const word = ROLES[i];
+
+  useEffect(() => {
+    let tm: ReturnType<typeof setTimeout>;
+    if (mode === 'type') {
+      if (n < word.length) tm = setTimeout(() => setN(n + 1), 55);
+      else tm = setTimeout(() => setMode('hold'), 60);
+    } else if (mode === 'hold') {
+      tm = setTimeout(() => setMode('erase'), 2200);
+    } else {
+      if (n > 0) tm = setTimeout(() => setN(n - 1), 28);
+      else { setI((i + 1) % ROLES.length); setMode('type'); }
     }
-    return () => clearTimeout(timer);
-  }, [phase, charIdx, phrase]);
+    return () => clearTimeout(tm);
+  }, [mode, n, word, i]);
 
   return (
     <span>
-      {displayed}
-      <span className="inline-block w-[2px] h-[0.85em] align-middle ml-[3px] bg-[#4ade80] animate-pulse" />
+      <span
+        style={{
+          backgroundImage: SPECTRAL,
+          WebkitBackgroundClip: 'text',
+          backgroundClip: 'text',
+          color: 'transparent',
+          fontWeight: 600,
+        }}
+      >
+        {word.slice(0, n)}
+      </span>
+      <span className="spec-caret" style={{ background: C.cyan }} />
     </span>
   );
 }
 
-// ─── Animated counter ─────────────────────────────────────────────────────────
-
-function AnimatedCounter({ to, suffix = '' }: { to: number; suffix?: string }) {
-  const ref      = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true });
-
-  useEffect(() => {
-    if (!isInView || !ref.current) return;
-    const node = ref.current;
-    const ctrl = animate(0, to, {
-      duration: 1.4,
-      ease: 'easeOut',
-      onUpdate(v) { node.textContent = Math.round(v) + suffix; },
-    });
-    return () => ctrl.stop();
-  }, [isInView, to, suffix]);
-
-  return <span ref={ref}>0{suffix}</span>;
-}
-
-// ─── Terminal card ────────────────────────────────────────────────────────────
-
-const TERM_LINES: { cmd: boolean; text: string; green?: boolean }[] = [
-  { cmd: true,  text: 'whoami'                        },
-  { cmd: false, text: 'aditya@polmed'                 },
-  { cmd: true,  text: 'status'                        },
-  { cmd: false, text: '[ ONLINE ]',  green: true      },
-  { cmd: true,  text: 'focus'                         },
-  { cmd: false, text: 'embedded + web + networking'   },
-];
-
-function TerminalCard() {
+/* ── Spectrum "signal" panel (CSS keyframes, GPU scaleY) ─────────────────── */
+function SignalPanel() {
+  const bars = Array.from({ length: 28 });
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: 0.55, ease: 'easeOut' }}
-      className="rounded-lg border border-[#1f1f1f] bg-[#0d0d0d] overflow-hidden"
+    <div
+      className="relative overflow-hidden rounded-xl border p-5"
+      style={{ borderColor: C.line, background: C.panel }}
     >
-      {/* Title bar */}
-      <div className="flex items-center gap-1.5 px-3 py-2.5 border-b border-[#1f1f1f] bg-[#111111]">
-        <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
-        <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
-        <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
-        <span className="ml-auto text-[10px] text-[#3d3d3d] tracking-wider">terminal</span>
+      <div className="flex items-center justify-between mb-4">
+        <span className="text-[10px] tracking-[0.25em] uppercase" style={{ color: C.dim }}>
+          signal / live
+        </span>
+        <span className="flex items-center gap-1.5 text-[10px]" style={{ color: C.live }}>
+          <span className="spec-pulse w-1.5 h-1.5 rounded-full" style={{ background: C.live }} />
+          online
+        </span>
       </div>
-      {/* Body */}
-      <div className="px-4 py-3 flex flex-col gap-0.5">
-        {TERM_LINES.map((line, i) => (
-          <motion.p
-            key={i}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: 0.7 + i * 0.18 }}
-            className="text-[12px] leading-5"
+
+      {/* Equalizer */}
+      <div className="flex items-end gap-[3px] h-20 mb-5" aria-hidden>
+        {bars.map((_, k) => (
+          <span
+            key={k}
+            className="spec-bar flex-1 rounded-full"
             style={{
-              color: line.green ? '#4ade80' : line.cmd ? '#f1f1f1' : '#6b7280',
-              paddingLeft: line.cmd ? 0 : '0.75rem',
+              background: SPECTRAL,
+              animationDelay: `${(k % 14) * 90}ms`,
+              transformOrigin: 'bottom',
+              opacity: 0.55 + (k % 5) * 0.09,
             }}
-          >
-            {line.cmd && <span className="text-[#4ade80] mr-1.5 select-none">›</span>}
-            {line.text}
-          </motion.p>
+          />
         ))}
       </div>
-    </motion.div>
+
+      {/* Signature rows */}
+      <div className="flex flex-col gap-2.5 font-mono text-[12px]" style={{ fontFamily: 'var(--font-plex-mono)' }}>
+        {[
+          ['role', 'ai · security · software'],
+          ['based', 'Medan, Indonesia'],
+          ['shipping', 'agents · tools · web'],
+        ].map(([k, v]) => (
+          <div key={k} className="flex items-center gap-3">
+            <span style={{ color: C.dim }} className="w-16 shrink-0">{k}</span>
+            <span style={{ color: C.text }}>{v}</span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
+/* ── Data ────────────────────────────────────────────────────────────────── */
+const STACK = ['Python', 'TypeScript', 'Next.js', 'AI Agents / LLM', 'OSINT · Recon', 'Linux'];
 
-const SKILLS = ['Python', 'C/C++', 'Next.js', 'Networking', 'IoT', 'Linux'];
+const DOMAINS = [
+  { icon: Cpu, label: 'AI Engineering', desc: 'Autonomous agents, tool-use, retrieval, automation.', color: C.violet },
+  { icon: ShieldHalf, label: 'Cybersecurity', desc: 'OSINT, recon, vulnerability scanning, tooling.', color: C.cyan },
+  { icon: Boxes, label: 'Software', desc: 'Full-stack products with Next.js and Python.', color: '#6ea8ff' },
+];
 
-const MINI_STATS = [
-  { label: 'Repos',        value: 18, suffix: '',  icon: GitBranch      },
-  { label: 'Contributions',value: 10, suffix: '',  icon: Activity       },
-  { label: 'Live Project', value: 1,  suffix: '',  icon: Globe          },
-] as const;
-
-// TODO: replace with real project data fetched from GitHub API once lib is wired up
-const FEATURED_PROJECTS = [
+const FEATURED = [
   {
-    id: 'shift-drives',
-    title: 'Shift Drives',
+    id: 'scepter',
+    title: 'Scepter',
+    tag: 'AI tooling',
+    tagColor: C.violet,
     description:
-      'Full-stack digital agency platform built with Next.js. Offers web dev, mobile apps, cybersecurity, IoT solutions, AI chatbots, and N8N automation services. Features 132+ templates and a WhatsApp-integrated consultation flow.',
-    techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Vercel'],
-    status: 'active' as const,
-    featured: true,
-    githubUrl: '#',
-    demoUrl: 'https://shift-drives.vercel.app',
+      'Zero-dependency CLI that checks whether an MCP server is alive, maintained, and safe before you wire it into an agent. Published on npm as scepter-mcp.',
+    stack: ['TypeScript', 'Node', 'MCP'],
+    status: 'live' as const,
+    github: 'https://github.com/VeldanDev/scepter',
+    demo: 'https://www.npmjs.com/package/scepter-mcp',
   },
   {
-    id: 'iot-dashboard',
-    title: 'IoT Sensor Dashboard',
+    id: 'spencerweb',
+    title: 'SpencerWeb',
+    tag: 'Security',
+    tagColor: C.cyan,
     description:
-      'Real-time monitoring dashboard for embedded sensor networks. Displays telemetry from multiple ESP32 nodes over MQTT with live chart updates.',
-    techStack: ['Next.js', 'MQTT', 'C/C++', 'PostgreSQL'],
-    status: 'wip' as const,
-    featured: false,
-    githubUrl: '#',
-    demoUrl: null,
+      'Web vulnerability scanner covering SQLi, XSS, CSRF, SSL and exposed files, mapped to the OWASP Top 10, with a live dashboard and auto-generated PDF reports.',
+    stack: ['Python', 'OWASP', 'Express'],
+    status: 'live' as const,
+    github: 'https://github.com/VeldanDev/SpencerWeb',
+    demo: null,
   },
   {
-    id: 'network-visualizer',
-    title: 'Network Topology Visualizer',
+    id: 'agent',
+    title: 'Autonomous AI Agent',
+    tag: 'AI systems',
+    tagColor: C.violet,
     description:
-      'Web-based tool for mapping and analysing network topologies with live packet inspection powered by Scapy and D3.',
-    techStack: ['Python', 'React', 'Scapy', 'D3.js'],
+      'Self-hosted agent with 18 tools across voice, vision, and automation. Runs scheduled jobs, answers on Telegram, and drives real workflows end to end.',
+    stack: ['Python', 'LLM', 'Agents'],
     status: 'wip' as const,
-    featured: false,
-    githubUrl: '#',
-    demoUrl: null,
+    github: null,
+    demo: null,
+  },
+  {
+    id: 'specter',
+    title: 'Specter 2.0',
+    tag: 'Security',
+    tagColor: C.cyan,
+    description:
+      'CLI OSINT and reconnaissance framework for information gathering, built lean enough to run on a Raspberry Pi Zero.',
+    stack: ['Python', 'OSINT', 'CLI'],
+    status: 'live' as const,
+    github: 'https://github.com/VeldanDev/specter-2.0',
+    demo: null,
   },
 ];
 
-const STATUS_META = {
-  active:    { color: '#4ade80', label: 'active'      },
-  completed: { color: '#38bdf8', label: 'completed'   },
-  wip:       { color: '#f59e0b', label: 'in progress' },
-};
+const fadeUp = { hidden: { opacity: 0, y: 22 }, visible: { opacity: 1, y: 0 } };
+const view = { once: true, margin: '-60px' } as const;
+const ease: [number, number, number, number] = [0.23, 1, 0.32, 1];
 
-const fadeUp = {
-  hidden:  { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0  },
-};
-
-const view = { once: true, margin: '-50px' as const };
-const t    = (d = 0) => ({ duration: 0.35, ease: 'easeOut' as const, delay: d });
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
+/* ── Page ────────────────────────────────────────────────────────────────── */
 export default function Home() {
+  const glowRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
+
+  // Cursor-follow spectral glow — rAF + transform, pointer-fine only.
+  useEffect(() => {
+    const glow = glowRef.current, hero = heroRef.current;
+    if (!glow || !hero) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let raf = 0, tx = 0, ty = 0;
+    const move = (e: PointerEvent) => {
+      const r = hero.getBoundingClientRect();
+      tx = e.clientX - r.left; ty = e.clientY - r.top;
+      if (!raf) raf = requestAnimationFrame(() => {
+        glow.style.transform = `translate3d(${tx - 260}px, ${ty - 260}px, 0)`;
+        raf = 0;
+      });
+    };
+    hero.addEventListener('pointermove', move);
+    return () => { hero.removeEventListener('pointermove', move); if (raf) cancelAnimationFrame(raf); };
+  }, []);
+
   return (
-    <div className="min-h-screen px-6 py-14 md:py-20 max-w-5xl mx-auto">
+    <div style={{ background: C.bg, color: C.text }}>
+      {/* ═══ HERO ═══ */}
+      <section
+        ref={heroRef}
+        className="relative overflow-hidden px-6 md:px-10 pt-16 md:pt-24 pb-20"
+        style={{ fontFamily: 'var(--font-sans-body)' }}
+      >
+        {/* cursor glow */}
+        <div
+          ref={glowRef}
+          className="pointer-events-none absolute left-0 top-0 w-[520px] h-[520px] rounded-full opacity-40 hidden md:block"
+          style={{
+            background: 'radial-gradient(circle, rgba(139,124,255,0.16), rgba(69,224,208,0.06) 40%, transparent 70%)',
+            willChange: 'transform',
+          }}
+          aria-hidden
+        />
+        {/* faint grid */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.5]"
+          style={{
+            backgroundImage:
+              `linear-gradient(${C.line} 1px,transparent 1px),linear-gradient(90deg,${C.line} 1px,transparent 1px)`,
+            backgroundSize: '46px 46px',
+            maskImage: 'radial-gradient(circle at 30% 20%, black, transparent 75%)',
+            WebkitMaskImage: 'radial-gradient(circle at 30% 20%, black, transparent 75%)',
+          }}
+          aria-hidden
+        />
 
-      {/* ══ Hero ══════════════════════════════════════════════════════════════ */}
-      <section className="mb-28">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-14 items-start">
-
-          {/* ── Left column ── */}
+        <div className="relative max-w-5xl mx-auto grid lg:grid-cols-[1fr_300px] gap-12 items-center">
           <div>
-            {/* Availability badge */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={t()}
-              className="inline-flex items-center gap-2 mb-7"
+              initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease }}
+              className="inline-flex items-center gap-2 mb-8 px-3 py-1.5 rounded-full border"
+              style={{ borderColor: C.line2, background: C.panel2 }}
             >
-              <span className="w-2 h-2 rounded-full bg-[#4ade80] animate-pulse shrink-0" />
-              <span className="text-xs tracking-[0.22em] text-[#4ade80] font-medium">
-                [ AVAILABLE FOR INTERNSHIP ]
+              <span className="spec-pulse w-1.5 h-1.5 rounded-full" style={{ background: C.live }} />
+              <span className="text-[11px] tracking-[0.18em]" style={{ color: C.muted }}>
+                AVAILABLE FOR WORK
               </span>
             </motion.div>
 
-            {/* Name */}
-            <motion.h1
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={t(0.08)}
-              className="text-4xl sm:text-5xl lg:text-[3.5rem] font-semibold tracking-tight
-                         text-[#f1f1f1] leading-[1.1] mb-5"
+            <h1
+              className="font-bold leading-[0.95] tracking-[-0.03em] mb-5 text-[15vw] sm:text-6xl lg:text-[4.6rem]"
+              style={{ fontFamily: 'var(--font-display)', color: C.text }}
             >
-              Aditya Surya Putra
-            </motion.h1>
+              <DecodeName text="Aditya" />
+              <br />
+              <span style={{ color: C.dim }}><DecodeName text="Surya Putra" /></span>
+            </h1>
 
-            {/* Cycling role */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={t(0.16)}
-              className="text-lg md:text-xl text-[#4ade80] font-medium mb-4 min-h-[1.75rem]"
-            >
-              <CyclingTyper />
-            </motion.div>
+            {/* spectral prism sweep */}
+            <div className="relative h-px w-full max-w-sm mb-7 overflow-hidden" style={{ background: C.line }}>
+              <div className="spec-sweep absolute inset-y-0 w-1/3" style={{ background: SPECTRAL }} />
+            </div>
 
-            {/* University */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={t(0.22)}
-              className="flex items-center gap-1.5 text-sm text-[#6b7280] mb-7"
-            >
-              <MapPin size={13} strokeWidth={1.5} className="shrink-0 text-[#4ade80]" />
-              <span>Politeknik Negeri Medan</span>
-            </motion.div>
+            <div className="text-lg md:text-xl mb-6 h-8" style={{ fontFamily: 'var(--font-plex-mono)' }}>
+              <CyclingRole />
+            </div>
 
-            {/* Bio */}
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={t(0.28)}
-              className="text-[#6b7280] text-sm leading-[1.95] max-w-lg mb-8"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35, duration: 0.6 }}
+              className="max-w-lg text-[15px] leading-[1.85] mb-8" style={{ color: C.muted }}
             >
-              I build things at the intersection of hardware and software — from{' '}
-              <span className="text-[#f1f1f1]">embedded systems</span> and{' '}
-              <span className="text-[#f1f1f1]">networking protocols</span> to{' '}
-              <span className="text-[#f1f1f1]">full-stack web applications</span>.
-              Currently studying at Politeknik Negeri Medan, driven by IoT,
-              Linux infrastructure, and modern web development.
+              I build at the edge of intelligence and security. My work spans{' '}
+              <span style={{ color: C.text }}>autonomous AI agents</span>,{' '}
+              <span style={{ color: C.text }}>offensive security tools</span> (OSINT, recon,
+              vulnerability scanning), and{' '}
+              <span style={{ color: C.text }}>production software</span>. I ship real tools that
+              people actually run, not just demos.
             </motion.p>
 
-            {/* Skill badges */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={t(0.34)}
-              className="flex flex-wrap gap-2 mb-9"
-            >
-              {SKILLS.map((skill) => (
-                <span
-                  key={skill}
-                  className="px-3 py-1 text-xs rounded-md border border-[#1f1f1f] bg-[#111111]
-                             text-[#6b7280] hover:border-[#4ade80]/40 hover:text-[#f1f1f1]
-                             transition-colors duration-150 cursor-default"
+            <div className="flex flex-wrap gap-2 mb-9">
+              {STACK.map((s, k) => (
+                <motion.span
+                  key={s}
+                  initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.45 + k * 0.05, duration: 0.4 }}
+                  className="px-3 py-1 text-xs rounded-md border"
+                  style={{ borderColor: C.line, background: C.panel2, color: C.muted, fontFamily: 'var(--font-plex-mono)' }}
                 >
-                  {skill}
-                </span>
-              ))}
-            </motion.div>
-
-            {/* CTA buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={t(0.4)}
-              className="flex flex-wrap gap-3"
-            >
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-sm
-                           font-medium bg-[#4ade80]/10 border border-[#4ade80]/30 text-[#4ade80]
-                           hover:bg-[#4ade80]/20 hover:border-[#4ade80]/50
-                           transition-all duration-150"
-              >
-                <GitBranch size={14} strokeWidth={1.5} />
-                View Projects
-              </Link>
-              <Link
-                href="/dashboard"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-sm
-                           font-medium border border-[#1f1f1f] bg-[#111111] text-[#6b7280]
-                           hover:text-[#f1f1f1] hover:border-[#2a2a2a]
-                           transition-all duration-150"
-              >
-                <LayoutDashboard size={14} strokeWidth={1.5} />
-                View Dashboard
-              </Link>
-            </motion.div>
-          </div>
-
-          {/* ── Right column ── */}
-          <div className="flex flex-col gap-4">
-
-            {/* Profile photo */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.45, delay: 0.2, ease: 'easeOut' }}
-              className="relative mx-auto lg:mx-0 w-[200px]"
-            >
-              {/* Glow halo */}
-              <div className="absolute -inset-4 rounded-2xl bg-[#4ade80]/8 blur-2xl pointer-events-none" />
-              {/* Border frame */}
-              <div className="relative rounded-xl border border-[#4ade80]/25 overflow-hidden
-                              shadow-[0_0_32px_rgba(74,222,128,0.08)]">
-                <Image
-                  src="/avatar.jpg"
-                  alt="Aditya Surya Putra"
-                  width={200}
-                  height={200}
-                  className="w-full h-auto object-cover grayscale hover:grayscale-0
-                             transition-all duration-500"
-                  priority
-                />
-              </div>
-            </motion.div>
-
-            {/* Mini stat cards */}
-            <div className="grid grid-cols-3 gap-2">
-              {MINI_STATS.map(({ label, value, icon: Icon }, i) => (
-                <motion.div
-                  key={label}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={t(0.35 + i * 0.07)}
-                  className="flex flex-col items-center gap-1.5 p-3 rounded-lg
-                             border border-[#1f1f1f] bg-[#111111] text-center"
-                >
-                  <Icon size={13} strokeWidth={1.5} className="text-[#4ade80]" />
-                  <span className="text-lg font-semibold text-[#f1f1f1] tabular-nums leading-none">
-                    <AnimatedCounter to={value} />
-                  </span>
-                  <span className="text-[9px] uppercase tracking-widest text-[#3d3d3d] leading-tight">
-                    {label}
-                  </span>
-                </motion.div>
+                  {s}
+                </motion.span>
               ))}
             </div>
 
-            {/* Terminal card */}
-            <TerminalCard />
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/projects"
+                className="spec-btn group inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-medium"
+                style={{ color: '#07080a', background: SPECTRAL }}
+              >
+                View Projects
+                <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm border transition-colors duration-200"
+                style={{ borderColor: C.line2, color: C.text, background: C.panel2 }}
+              >
+                Live Dashboard
+              </Link>
+            </div>
           </div>
+
+          {/* signal panel */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.6, ease }}
+          >
+            <SignalPanel />
+          </motion.div>
         </div>
       </section>
 
-      {/* ══ Featured Projects ═════════════════════════════════════════════════ */}
-      <section>
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={view}
-          transition={t()}
-          className="flex items-end justify-between mb-8"
-        >
-          <div>
-            <p className="text-[10px] uppercase tracking-widest text-[#3d3d3d] mb-1.5">
-              selected work
-            </p>
-            <h2 className="text-2xl font-semibold text-[#f1f1f1] tracking-tight">
-              Featured Projects
-            </h2>
-          </div>
-          <Link
-            href="/projects"
-            className="flex items-center gap-1 text-xs text-[#6b7280] hover:text-[#4ade80]
-                       transition-colors duration-150"
-          >
-            View all <ArrowRight size={11} className="mt-px" />
-          </Link>
-        </motion.div>
-
-        {/* TODO: swap FEATURED_PROJECTS with real data once GitHub API lib is wired up */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURED_PROJECTS.map((project, i) => {
-            const meta = STATUS_META[project.status];
-            return (
-              <motion.article
-                key={project.id}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={view}
-                transition={t(i * 0.09)}
-                className="group relative flex flex-col gap-4 p-6 rounded-xl border border-[#1f1f1f]
-                           bg-[#111111] hover:border-[#2a2a2a]
-                           hover:shadow-[0_0_24px_rgba(74,222,128,0.04)]
-                           transition-all duration-300"
+      {/* ═══ DOMAINS ═══ */}
+      <section className="px-6 md:px-10 pb-20" style={{ fontFamily: 'var(--font-sans-body)' }}>
+        <div className="max-w-5xl mx-auto grid sm:grid-cols-3 gap-4">
+          {DOMAINS.map(({ icon: Icon, label, desc, color }, k) => (
+            <motion.div
+              key={label}
+              variants={fadeUp} initial="hidden" whileInView="visible" viewport={view}
+              transition={{ delay: k * 0.08, duration: 0.5, ease }}
+              className="spec-card group relative rounded-xl border p-6 overflow-hidden"
+              style={{ borderColor: C.line, background: C.panel }}
+            >
+              <span
+                className="flex items-center justify-center w-10 h-10 rounded-lg border mb-4 transition-colors duration-300"
+                style={{ borderColor: C.line2, background: C.panel2, color }}
               >
-                {/* Featured badge */}
-                {project.featured && (
-                  <span className="absolute top-4 right-4 px-2 py-0.5 text-[9px] uppercase
-                                   tracking-widest rounded border border-[#4ade80]/20
-                                   bg-[#4ade80]/8 text-[#4ade80]">
-                    featured
-                  </span>
-                )}
+                <Icon size={18} strokeWidth={1.6} />
+              </span>
+              <h3 className="text-base font-semibold mb-1.5" style={{ color: C.text }}>{label}</h3>
+              <p className="text-[13px] leading-relaxed" style={{ color: C.muted }}>{desc}</p>
+              <span
+                className="absolute -bottom-px left-0 h-px w-0 group-hover:w-full transition-all duration-500"
+                style={{ background: SPECTRAL }}
+              />
+            </motion.div>
+          ))}
+        </div>
+      </section>
 
-                {/* Header */}
-                <div className="flex items-start gap-3 pr-14">
+      {/* ═══ FEATURED ═══ */}
+      <section className="px-6 md:px-10 pb-28" style={{ fontFamily: 'var(--font-sans-body)' }}>
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            variants={fadeUp} initial="hidden" whileInView="visible" viewport={view}
+            transition={{ duration: 0.5, ease }}
+            className="flex items-end justify-between mb-8"
+          >
+            <div>
+              <p className="text-[11px] tracking-[0.25em] uppercase mb-2" style={{ color: C.dim, fontFamily: 'var(--font-plex-mono)' }}>
+                selected work
+              </p>
+              <h2 className="text-3xl font-bold tracking-tight" style={{ fontFamily: 'var(--font-display)', color: C.text }}>
+                Things I&apos;ve shipped
+              </h2>
+            </div>
+            <Link href="/projects" className="text-sm flex items-center gap-1 transition-colors duration-200" style={{ color: C.muted }}>
+              All projects <ArrowUpRight size={14} />
+            </Link>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            {FEATURED.map((p, k) => (
+              <motion.article
+                key={p.id}
+                variants={fadeUp} initial="hidden" whileInView="visible" viewport={view}
+                transition={{ delay: k * 0.07, duration: 0.5, ease }}
+                className="spec-card group relative flex flex-col rounded-xl border p-6 overflow-hidden"
+                style={{ borderColor: C.line, background: C.panel }}
+              >
+                <div className="flex items-center justify-between mb-4">
                   <span
-                    className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
-                    style={{ backgroundColor: meta.color }}
-                  />
-                  <h3 className="text-base font-semibold text-[#f1f1f1] leading-snug
-                                 group-hover:text-[#4ade80] transition-colors duration-200">
-                    {project.title}
-                  </h3>
+                    className="px-2.5 py-1 text-[10px] tracking-[0.15em] uppercase rounded-md border"
+                    style={{ color: p.tagColor, borderColor: `${p.tagColor}44`, background: `${p.tagColor}12` }}
+                  >
+                    {p.tag}
+                  </span>
+                  <span className="flex items-center gap-1.5 text-[10px]" style={{ color: p.status === 'live' ? C.live : C.wip }}>
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ background: p.status === 'live' ? C.live : C.wip }} />
+                    {p.status === 'live' ? 'live' : 'in progress'}
+                  </span>
                 </div>
 
-                {/* Description */}
-                <p className="text-xs text-[#6b7280] leading-[1.8] flex-1">
-                  {project.description}
+                <h3 className="text-xl font-semibold mb-2" style={{ fontFamily: 'var(--font-display)', color: C.text }}>
+                  {p.title}
+                </h3>
+                <p className="text-[13px] leading-relaxed mb-5 flex-1" style={{ color: C.muted }}>
+                  {p.description}
                 </p>
 
-                {/* Tech stack */}
-                <div className="flex flex-wrap gap-1.5">
-                  {project.techStack.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2.5 py-1 text-[10px] rounded-md border border-[#1f1f1f]
-                                 bg-[#0a0a0a] text-[#6b7280]"
-                    >
-                      {tech}
+                <div className="flex flex-wrap gap-1.5 mb-5">
+                  {p.stack.map((s) => (
+                    <span key={s} className="px-2 py-0.5 text-[10px] rounded border" style={{ borderColor: C.line, background: C.panel2, color: C.dim, fontFamily: 'var(--font-plex-mono)' }}>
+                      {s}
                     </span>
                   ))}
                 </div>
 
-                {/* Footer */}
-                <div className="flex items-center gap-4 pt-3 border-t border-[#1f1f1f]">
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      className="flex items-center gap-1.5 text-xs text-[#6b7280]
-                                 hover:text-[#4ade80] transition-colors duration-150"
-                    >
-                      <GitBranch size={12} strokeWidth={1.5} />
-                      Code
+                <div className="flex items-center gap-4 pt-4 border-t" style={{ borderColor: C.line }}>
+                  {p.github && (
+                    <a href={p.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs transition-colors duration-200" style={{ color: C.muted }}>
+                      <GitBranch size={13} /> Source
                     </a>
                   )}
-                  {project.demoUrl && (
-                    <a
-                      href={project.demoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-xs text-[#6b7280]
-                                 hover:text-[#38bdf8] transition-colors duration-150"
-                    >
-                      <ExternalLink size={12} strokeWidth={1.5} />
-                      Live demo
+                  {p.demo && (
+                    <a href={p.demo} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs transition-colors duration-200" style={{ color: C.muted }}>
+                      <ArrowUpRight size={13} /> Live
                     </a>
                   )}
-                  <span
-                    className="ml-auto text-[10px] tracking-wide"
-                    style={{ color: meta.color }}
-                  >
-                    {meta.label}
-                  </span>
                 </div>
+                <span className="absolute -bottom-px left-0 h-px w-0 group-hover:w-full transition-all duration-500" style={{ background: SPECTRAL }} />
               </motion.article>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </section>
     </div>
