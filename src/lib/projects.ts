@@ -12,6 +12,7 @@ export interface CaseStudy {
   architecture: { label: string; detail: string }[];
   screenshot?: string; // path under /public, real asset only
   screenshotAlt?: string;
+  terminalOutput?: string; // real captured stdout from actually running the tool
   metrics?: { label: string; value: string }[];
 }
 
@@ -74,6 +75,8 @@ export const PROJECTS: Project[] = [
         { label: 'PDF reporting (ReportLab)', detail: 'Auto-generates a professional, partner-ready report from the same scan data the dashboard shows live.' },
         { label: 'SQL injection module', detail: 'The one module explicitly marked "verified" in its own docs: error-based, boolean-based, and time-based detection, not just pattern matching on response text.' },
       ],
+      screenshot: '/projects/spencerweb-demo.png',
+      screenshotAlt: 'SpencerWeb dashboard new-scan form: URL target field and Fast/Standard/Deep scan mode selection',
     },
   },
   {
@@ -109,6 +112,43 @@ export const PROJECTS: Project[] = [
         { label: 'Startup diagnostics', detail: 'boot.py runs system checks and renders a live resource snapshot before the menu loads, so you know the hardware can handle the session before starting one.' },
         { label: 'Constrained-hardware target', detail: 'Built and tuned to run on a Raspberry Pi Zero, not just a full laptop -- every module has to justify its footprint.' },
       ],
+      terminalOutput:
+`  ███████╗██████╗ ███████╗ ██████╗████████╗██████╗ ███████╗
+  ██╔════╝██╔══██╗██╔════╝██╔════╝╚══██╔══╝██╔══██╗██╔════╝
+  ███████╗██████╔╝█████╗  ██║        ██║   ██████╔╝█████╗
+  ╚════██║██╔═══╝ ██╔══╝  ██║        ██║   ██╔══██╗██╔══╝
+  ███████║██║     ███████╗╚██████╗   ██║   ██║  ██║███████╗
+  ╚══════╝╚═╝     ╚══════╝ ╚═════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝
+
+  v2.0.0  Portable Network Inspection & Security Toolkit
+
+  ╔════════════════════ System Check ════════════════════╗
+
+  [*] Host: LAPTOP-G6BEAF5A  |  OS: Windows  |  Arch: AMD64
+  [+] Python 3.10.11
+  [!] Not running as Administrator -- some modules may fail
+  [+] nmap found
+
+  All systems nominal. Launching ...
+
+  ╔═════════════════════ Main Menu ══════════════════════╗
+
+  [1]  [✓]  Network Scanning
+  [2]  [✓]  WiFi Analysis
+  [3]  [~]  Bluetooth Scanning
+  [4]  [✓]  OSINT Tools
+  [5]  [✓]  System Monitoring
+  [6]  [✓]  Network Monitor
+  [7]  [✓]  Packet Sniffer
+  [8]  [✓]  Threat Detection
+  [9]  [✓]  Toolkit
+
+  [H]  [ ]  Help & About
+  [L]  [ ]  View Saved Logs
+  [R]  [ ]  Generate HTML Report
+  [0]       Exit
+
+  Legend: [✓] Available  [~] Limited (this OS)`,
     },
   },
   {

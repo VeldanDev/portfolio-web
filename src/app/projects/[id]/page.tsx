@@ -81,6 +81,20 @@ export default async function ProjectCaseStudy({ params }: { params: Promise<{ i
           </div>
         )}
 
+        {cs.terminalOutput && (
+          <div className="rounded-xl overflow-hidden border mb-12" style={{ borderColor: C.line, background: '#08090c' }}>
+            <div className="flex items-center gap-1.5 px-4 py-2.5 border-b" style={{ borderColor: C.line }}>
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#f87171' }} />
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#f5a524' }} />
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#3ee6a0' }} />
+              <span className="ml-2 text-[11px]" style={{ color: C.dim, fontFamily: 'var(--font-plex-mono)' }}>{project.id}</span>
+            </div>
+            <pre className="p-5 overflow-x-auto text-[11px] leading-relaxed" style={{ color: '#c9cdd4', fontFamily: 'var(--font-plex-mono)' }}>
+              {cs.terminalOutput}
+            </pre>
+          </div>
+        )}
+
         <section className="mb-10">
           <p className="text-[11px] tracking-[0.2em] uppercase mb-3" style={{ color: C.dim, fontFamily: 'var(--font-plex-mono)' }}>the problem</p>
           <p className="text-[15px] leading-[1.85]" style={{ color: C.muted }}>{cs.problem}</p>
