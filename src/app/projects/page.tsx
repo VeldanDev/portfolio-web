@@ -3,9 +3,11 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import Image from 'next/image';
-import { GitBranch, ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
+import { GitBranch, ArrowUpRight, FileText } from 'lucide-react';
 import CountUp from '@/components/CountUp';
 import Tilt from '@/components/interactive/Tilt';
+import { PROJECTS, FILTERS, CAT_COLOR, ST_META, type Project, type Cat } from '@/lib/projects';
 
 /* ── Spectral palette ────────────────────────────────────────────────────── */
 const C = {
@@ -14,107 +16,6 @@ const C = {
   violet: '#8b7cff', cyan: '#45e0d0', blue: '#6ea8ff', live: '#3ee6a0', wip: '#f5a524', done: '#6ea8ff',
 };
 const SPECTRAL = 'linear-gradient(90deg,#8b7cff 0%,#6ea8ff 45%,#45e0d0 100%)';
-
-type Cat = 'ai' | 'security' | 'web' | 'mobile';
-type St = 'live' | 'wip' | 'done';
-
-interface Project {
-  id: string; title: string; cat: Cat; catLabel: string; status: St;
-  desc: string; stack: string[]; github: string | null; demo: string | null;
-  featured?: boolean; image?: string;
-}
-
-const CAT_COLOR: Record<Cat, string> = { ai: C.violet, security: C.cyan, web: C.blue, mobile: '#f5a524' };
-const ST_META: Record<St, { c: string; l: string }> = {
-  live: { c: C.live, l: 'live' }, wip: { c: C.wip, l: 'in progress' }, done: { c: C.done, l: 'shipped' },
-};
-
-/* ── All projects ────────────────────────────────────────────────────────── */
-const PROJECTS: Project[] = [
-  {
-    id: 'scepter', title: 'Scepter', cat: 'ai', catLabel: 'AI tooling', status: 'live', featured: true,
-    desc: 'Zero-dependency CLI that checks whether an MCP server is alive, maintained, and safe before you wire it into an agent. Runs health, wrap, report, and badge commands. Published on npm as scepter-mcp.',
-    stack: ['TypeScript', 'Node', 'MCP', 'CLI'],
-    github: 'https://github.com/VeldanDev/scepter', demo: 'https://www.npmjs.com/package/scepter-mcp',
-  },
-  {
-    id: 'spencerweb', title: 'SpencerWeb', cat: 'security', catLabel: 'Security', status: 'live', featured: true,
-    desc: 'Web vulnerability scanner covering SQLi, XSS, CSRF, SSL issues, open ports, and exposed files, mapped to the OWASP Top 10. Ships a live dashboard and auto-generated PDF reports. Built as my final project.',
-    stack: ['Python', 'Node', 'OWASP', 'ReportLab'],
-    github: 'https://github.com/VeldanDev/SpencerWeb', demo: null,
-  },
-  {
-    id: 'tiburon', title: 'Tiburon', cat: 'ai', catLabel: 'AI systems', status: 'wip', featured: true,
-    desc: 'Self-hosted AI agent with 18 tools across voice, vision, and automation. Runs on Telegram, executes scheduled cron jobs, and gates any high-impact action (file deletion, sending messages, restarting services) behind an explicit permission step before acting, instead of running unattended.',
-    stack: ['Python', 'OpenClaw', 'LLM', 'Agents', 'Automation'],
-    github: 'https://github.com/VeldanDev/otak', demo: null,
-  },
-  {
-    id: 'specter', title: 'Specter 2.0', cat: 'security', catLabel: 'OSINT', status: 'live',
-    desc: 'CLI OSINT and reconnaissance framework for information gathering, built lean enough to run on a Raspberry Pi Zero. Automates the boring parts of recon.',
-    stack: ['Python', 'OSINT', 'Recon', 'CLI'],
-    github: 'https://github.com/VeldanDev/specter-2.0', demo: null,
-  },
-  {
-    id: 'agenttrace', title: 'agenttrace', cat: 'ai', catLabel: 'Dev tools', status: 'live',
-    desc: 'Observability for AI coding agents. Wires into the run loop to trace tool calls, timing, and failures so you can see what the agent actually did, not just its final answer.',
-    stack: ['TypeScript', 'Node', 'CLI'],
-    github: 'https://github.com/VeldanDev/agenttrace', demo: null,
-  },
-  {
-    id: 'objdetect', title: 'Object Detection', cat: 'ai', catLabel: 'Computer vision', status: 'done',
-    desc: 'Real-time object detection built with TensorFlow. Identifies and labels objects from a live camera feed.',
-    stack: ['Python', 'TensorFlow', 'OpenCV'],
-    github: null, demo: null,
-  },
-  {
-    id: 'shift-drives', title: 'Shift Drives', cat: 'web', catLabel: 'Platform', status: 'live',
-    desc: 'Full-stack digital agency platform built with Next.js: service catalog, tiered pricing, and a WhatsApp-integrated consultation flow.',
-    stack: ['Next.js', 'TypeScript', 'Tailwind', 'Vercel'],
-    github: null, demo: 'https://shift-drives.vercel.app',
-  },
-  {
-    id: 'prime-property', title: 'Prime Property', cat: 'web', catLabel: 'Web app', status: 'done',
-    desc: 'Property management platform with listings, authentication, and an admin dashboard, built on Next.js and Prisma.',
-    stack: ['Next.js', 'Prisma', 'PostgreSQL', 'Auth'],
-    github: null, demo: null,
-  },
-  {
-    id: 'hl-finance', title: 'HL Internal Finance', cat: 'web', catLabel: 'Web app', status: 'done',
-    desc: 'Internal finance management app for tracking budgets, transactions, and reporting inside an organization.',
-    stack: ['Next.js', 'TypeScript', 'Prisma'],
-    github: null, demo: null,
-  },
-  {
-    id: 'uptimeguard', title: 'UptimeGuard', cat: 'web', catLabel: 'Service', status: 'wip',
-    desc: 'Uptime monitoring service that pings endpoints on a schedule and alerts the moment something goes down.',
-    stack: ['Node', 'Express', 'Cron'],
-    github: null, demo: null,
-  },
-  {
-    id: 'asistenit', title: 'asistenIT', cat: 'ai', catLabel: 'AI assistant', status: 'wip',
-    desc: 'An AI assistant for everyday IT tasks: answering questions, drafting scripts, and automating small chores from one chat interface.',
-    stack: ['Python', 'LLM'],
-    github: null, demo: null,
-  },
-  {
-    id: 'angkringan', title: 'Angkringan Sedulur', cat: 'web', catLabel: 'Landing page', status: 'live',
-    desc: 'Landing page for a local food business, hand-built with clean HTML, CSS, and JavaScript.',
-    stack: ['HTML', 'CSS', 'JavaScript'],
-    github: 'https://github.com/VeldanDev/angkringan-sedulur', demo: null,
-  },
-  {
-    id: 'cords', title: 'Cords', cat: 'mobile', catLabel: 'Mobile app', status: 'wip',
-    desc: 'Cross-platform mobile app built with Capacitor, packaging a web UI into native Android and iOS.',
-    stack: ['Capacitor', 'TypeScript', 'Mobile'],
-    github: null, demo: null,
-  },
-];
-
-const FILTERS: { v: 'all' | Cat; l: string }[] = [
-  { v: 'all', l: 'All' }, { v: 'ai', l: 'AI' }, { v: 'security', l: 'Security' },
-  { v: 'web', l: 'Web' }, { v: 'mobile', l: 'Mobile' },
-];
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 const cardV = { hidden: { opacity: 0, y: 14, scale: 0.98 }, visible: { opacity: 1, y: 0, scale: 1 }, exit: { opacity: 0, scale: 0.98 } };
@@ -180,6 +81,12 @@ function Card({ p, i }: { p: Project; i: number }) {
         )}
         {!p.github && !p.demo && (
           <span className="text-xs" style={{ color: C.dim }}>Private / local build</span>
+        )}
+        {p.caseStudy && (
+          <Link href={`/projects/${p.id}`}
+            className="ml-auto flex items-center gap-1.5 text-xs hover:opacity-80 transition-opacity" style={{ color: C.violet }}>
+            <FileText size={13} /> Case study
+          </Link>
         )}
       </div>
       <span className="absolute -bottom-px left-0 h-px w-0 group-hover:w-full transition-all duration-500" style={{ background: SPECTRAL }} />
