@@ -44,9 +44,9 @@ const PROJECTS: Project[] = [
     github: 'https://github.com/VeldanDev/SpencerWeb', demo: null,
   },
   {
-    id: 'agent', title: 'Autonomous AI Agent', cat: 'ai', catLabel: 'AI systems', status: 'wip',
-    desc: 'Self-hosted AI agent with 18 tools across voice, vision, and automation. Runs scheduled jobs, answers on Telegram, and drives real workflows end to end without hand-holding.',
-    stack: ['Python', 'LLM', 'Agents', 'Automation'],
+    id: 'tiburon', title: 'Tiburon', cat: 'ai', catLabel: 'AI systems', status: 'wip', featured: true,
+    desc: 'Self-hosted AI agent with 18 tools across voice, vision, and automation. Runs on Telegram, executes scheduled cron jobs, and gates any high-impact action (file deletion, sending messages, restarting services) behind an explicit permission step before acting, instead of running unattended.',
+    stack: ['Python', 'OpenClaw', 'LLM', 'Agents', 'Automation'],
     github: 'https://github.com/VeldanDev/otak', demo: null,
   },
   {

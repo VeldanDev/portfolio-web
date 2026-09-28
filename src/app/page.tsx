@@ -187,15 +187,15 @@ const FEATURED = [
     demo: null,
   },
   {
-    id: 'agent',
-    title: 'Autonomous AI Agent',
+    id: 'tiburon',
+    title: 'Tiburon',
     tag: 'AI systems',
     tagColor: C.violet,
     description:
-      'Self-hosted agent with 18 tools across voice, vision, and automation. Runs scheduled jobs, answers on Telegram, and drives real workflows end to end.',
-    stack: ['Python', 'LLM', 'Agents'],
+      'Self-hosted AI agent with 18 tools across voice, vision, and automation. Runs on Telegram, executes scheduled cron jobs, and gates any high-impact action behind an explicit permission step before acting.',
+    stack: ['Python', 'OpenClaw', 'LLM', 'Agents'],
     status: 'wip' as const,
-    github: null,
+    github: 'https://github.com/VeldanDev/otak',
     demo: null,
   },
   {

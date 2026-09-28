@@ -31,6 +31,7 @@ const ITEMS: Item[] = [
   { id: 'npm', label: 'View Scepter on npm', hint: 'scepter-mcp', group: 'Actions', icon: Package, run: () => window.open('https://www.npmjs.com/package/scepter-mcp', '_blank') },
   { id: 'email', label: 'Copy email', hint: EMAIL, group: 'Actions', icon: Copy, keywords: 'contact mail', run: () => { navigator.clipboard?.writeText(EMAIL); } },
 
+  { id: 'p-tiburon', label: 'Tiburon', hint: 'AI agent · Telegram', group: 'Projects', icon: ArrowUpRight, keywords: 'agent telegram automation', run: () => window.open('https://github.com/VeldanDev/otak', '_blank') },
   { id: 'p-scepter', label: 'Scepter', hint: 'AI tooling · CLI', group: 'Projects', icon: ArrowUpRight, keywords: 'mcp npm', run: () => window.open('https://github.com/VeldanDev/scepter', '_blank') },
   { id: 'p-spencer', label: 'SpencerWeb', hint: 'Security · scanner', group: 'Projects', icon: ArrowUpRight, keywords: 'owasp vuln', run: () => window.open('https://github.com/VeldanDev/SpencerWeb', '_blank') },
   { id: 'p-specter', label: 'Specter 2.0', hint: 'OSINT · recon', group: 'Projects', icon: ArrowUpRight, keywords: 'osint', run: () => window.open('https://github.com/VeldanDev/specter-2.0', '_blank') },

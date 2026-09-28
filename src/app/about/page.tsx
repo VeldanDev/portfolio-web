@@ -77,8 +77,9 @@ export default function AboutPage() {
               I taught myself most of this by shipping. I published{' '}
               <span style={{ color: C.text }}>Scepter</span> to npm, a CLI that vets MCP servers before an
               agent trusts them. I built <span style={{ color: C.text }}>SpencerWeb</span>, a web
-              vulnerability scanner mapped to the OWASP Top 10, as my final project. And I run a self-hosted
-              AI agent with 18 tools that handles real day-to-day work over Telegram.
+              vulnerability scanner mapped to the OWASP Top 10, as my final project. And I run{' '}
+              <span style={{ color: C.text }}>Tiburon</span>, a self-hosted AI agent with 18 tools
+              that handles real day-to-day work over Telegram.
             </p>
             <p>
               I&apos;m a Computer Engineering student at Politeknik Negeri Medan, which gave me the low-level
