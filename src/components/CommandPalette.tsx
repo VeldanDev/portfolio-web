@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  Command as CmdIcon, Home, User, FolderGit2, LayoutDashboard, Trophy, Mail, Bot,
+  Command as CmdIcon, Home, User, FolderGit2, BarChart3, Trophy, Mail, Bot,
   GitBranch, Package, Copy, ArrowUpRight, Search, CornerDownLeft,
 } from 'lucide-react';
 
@@ -22,7 +22,7 @@ const ITEMS: Item[] = [
   { id: 'home', label: 'Home', group: 'Navigate', icon: Home, run: (r) => r.push('/') },
   { id: 'about', label: 'About', group: 'Navigate', icon: User, run: (r) => r.push('/about') },
   { id: 'projects', label: 'Projects', group: 'Navigate', icon: FolderGit2, run: (r) => r.push('/projects') },
-  { id: 'dashboard', label: 'Live Dashboard', group: 'Navigate', icon: LayoutDashboard, run: (r) => r.push('/dashboard'), keywords: 'stats github wakatime' },
+  { id: 'stats', label: 'Live Stats', group: 'Navigate', icon: BarChart3, run: (r) => r.push('/#stats'), keywords: 'dashboard stats github wakatime' },
   { id: 'achievements', label: 'Achievements', group: 'Navigate', icon: Trophy, run: (r) => r.push('/achievements') },
   { id: 'smart-talk', label: 'Smart Talk', group: 'Navigate', icon: Bot, run: (r) => r.push('/smart-talk'), keywords: 'ai chat assistant' },
   { id: 'contact', label: 'Contact', group: 'Navigate', icon: Mail, run: (r) => r.push('/contact') },
