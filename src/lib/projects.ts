@@ -156,54 +156,154 @@ export const PROJECTS: Project[] = [
     desc: 'Observability for AI coding agents. Wires into the run loop to trace tool calls, timing, and failures so you can see what the agent actually did, not just its final answer.',
     stack: ['TypeScript', 'Node', 'CLI'],
     github: 'https://github.com/VeldanDev/agenttrace', demo: null,
+    caseStudy: {
+      problem:
+        'When an AI coding agent does something wrong, the only evidence is usually its final answer -- there\'s no record of which files it touched, how long each step took, or where the run actually went off track.',
+      approach:
+        'agenttrace wires directly into Claude Code\'s hook system (PreToolUse, PostToolUse, Stop), configured automatically the first time you run it. From then on, every tool call in the project is appended to a local JSONL file, one file per session -- timestamp, tool name, a truncated view of its input, file paths touched, and a rough token estimate. agenttrace replay turns that raw log back into a readable terminal timeline.',
+      architecture: [
+        { label: 'Hook-based capture', detail: 'Configures Claude Code\'s own hook system in .claude/settings.json -- no manual instrumentation, no wrapper around the agent itself.' },
+        { label: 'JSONL session log', detail: 'One line per tool call, one file per session, kept local under .agentlog/ (auto-added to .gitignore). Nothing leaves the machine.' },
+        { label: 'Terminal replay', detail: 'Reconstructs a session as a timestamped timeline instead of a raw log dump, so a slow or failing tool call is easy to spot.' },
+      ],
+      screenshot: '/projects/agenttrace-demo.png',
+      screenshotAlt: 'agenttrace replaying a recorded Claude Code session as a terminal timeline',
+    },
   },
   {
     id: 'objdetect', title: 'Object Detection', cat: 'ai', catLabel: 'Computer vision', status: 'done',
     desc: 'Real-time object detection built with TensorFlow. Identifies and labels objects from a live camera feed.',
     stack: ['Python', 'TensorFlow', 'OpenCV'],
     github: null, demo: null,
+    caseStudy: {
+      problem:
+        'Most object-detection tutorials stop at running a model against a static image. Getting it to run against a live camera feed without lagging, and keeping the label set correct and scoped, is a different problem.',
+      approach:
+        'Loads a pretrained SSD MobileNet V2 from TensorFlow Hub once, then runs an OpenCV capture loop: read a frame, convert BGR to RGB, run inference, draw the results, repeat. The label map is deliberately trimmed to a small, correct subset rather than the full 90-class COCO set, since a smaller label set is easier to verify by hand for a class assignment.',
+      architecture: [
+        { label: 'TensorFlow Hub model', detail: 'SSD MobileNet V2, loaded once at startup and reused across every frame instead of reloading per inference.' },
+        { label: 'OpenCV capture loop', detail: 'Reads live frames from a camera device, handles the BGR-to-RGB conversion TensorFlow expects, and runs inference in the same loop.' },
+        { label: 'Trimmed label map', detail: 'A small, hand-picked label set instead of the full COCO taxonomy -- kept deliberately narrow and verifiably correct.' },
+      ],
+    },
   },
   {
     id: 'shift-drives', title: 'Shift Drives', cat: 'web', catLabel: 'Platform', status: 'live',
     desc: 'Full-stack digital agency platform built with Next.js: service catalog, tiered pricing, and a WhatsApp-integrated consultation flow.',
     stack: ['Next.js', 'TypeScript', 'Tailwind', 'Vercel'],
     github: null, demo: 'https://shift-drives.vercel.app',
+    caseStudy: {
+      problem:
+        'Freelance and small-agency web work usually has no real storefront -- pricing hidden behind a contact form, no way to browse actual example work before reaching out and starting a conversation.',
+      approach:
+        'Shift Drives is a live, deployed agency platform: a catalog of 29 curated template designs across 5 categories (each with its own working demo), transparent tiered pricing shown up front, and a WhatsApp-first conversion flow where every call-to-action opens a pre-filled message instead of a contact form.',
+      architecture: [
+        { label: 'Next.js App Router + Vercel', detail: 'Auto-deploys to production on every push to main; no manual deploy step.' },
+        { label: 'Template catalog', detail: '29 curated designs across 5 categories, each backed by a real, clickable demo rather than a static screenshot.' },
+        { label: 'WhatsApp-first conversion', detail: 'Every CTA opens a pre-filled WhatsApp message built from a single WA_NUMBER source, removing contact-form friction entirely.' },
+      ],
+    },
   },
   {
     id: 'prime-property', title: 'Prime Property', cat: 'web', catLabel: 'Web app', status: 'done',
     desc: 'Property management platform with listings, authentication, and an admin dashboard, built on Next.js and Prisma.',
     stack: ['Next.js', 'Prisma', 'PostgreSQL', 'Auth'],
     github: null, demo: null,
+    caseStudy: {
+      problem:
+        'Property management for a small agency or landlord usually ends up scattered across spreadsheets -- no shared listings view, no real access control, no audit trail on who changed what.',
+      approach:
+        'A full-stack Next.js app backed by Prisma and PostgreSQL for real relational listings data, Radix UI primitives wired directly for accessible dialogs/selects/checkboxes rather than a generic form template, and bcrypt-hashed authentication instead of a bolted-on login screen.',
+      architecture: [
+        { label: 'Next.js + Prisma + PostgreSQL', detail: 'Real relational data for listings, not a mocked or in-memory dataset.' },
+        { label: 'Radix UI primitives', detail: 'Accessible dialog, select, checkbox, and radio components wired directly into the forms, not a generic UI kit dropped in unmodified.' },
+        { label: 'bcryptjs auth', detail: 'Passwords hashed properly at rest instead of stored in plaintext or behind a fake auth layer.' },
+      ],
+    },
   },
   {
     id: 'hl-finance', title: 'HL Internal Finance', cat: 'web', catLabel: 'Web app', status: 'done',
     desc: 'Internal finance management app for tracking budgets, transactions, and reporting inside an organization.',
     stack: ['Next.js', 'TypeScript', 'Prisma'],
     github: null, demo: null,
+    caseStudy: {
+      problem:
+        'Internal budget tracking for a small organization usually lives in a shared spreadsheet: no real audit trail, no PDF exports for stakeholders, and rounding errors from doing money math in plain floating point.',
+      approach:
+        'A Next.js finance app that uses decimal.js for exact monetary arithmetic instead of native floating-point numbers, @react-pdf/renderer to generate real PDF reports as React components rather than calling out to an external service, and jose-signed JWT sessions backed by a Prisma/Postgres user store.',
+      architecture: [
+        { label: 'decimal.js for money', detail: 'Every monetary calculation goes through exact decimal arithmetic, sidestepping the classic 0.1 + 0.2 floating-point rounding bug.' },
+        { label: '@react-pdf/renderer', detail: 'PDF reports generated server-side as real React components sharing the same data model as the UI, not a separate templating system.' },
+        { label: 'jose + Prisma auth', detail: 'Signed JWT sessions backed by a real Postgres-via-Prisma user store, not a hardcoded credential.' },
+      ],
+    },
   },
   {
     id: 'uptimeguard', title: 'UptimeGuard', cat: 'web', catLabel: 'Service', status: 'wip',
     desc: 'Uptime monitoring service that pings endpoints on a schedule and alerts the moment something goes down.',
-    stack: ['Node', 'Express', 'Cron'],
+    stack: ['Bun', 'Elysia', 'Prisma', 'PostgreSQL'],
     github: null, demo: null,
+    caseStudy: {
+      problem:
+        'Finding out an endpoint is down usually comes from a customer complaint, not a monitor -- cheap uptime tools tend to be either too basic (a single current-status flag) or too expensive for a side project.',
+      approach:
+        'A Bun + Elysia backend pings every monitored URL on a schedule with a 5-second timeout, then persists each check -- up/down, HTTP status code, latency -- as its own row via Prisma against Postgres, so history is queryable, not just a rolling "currently up" flag.',
+      architecture: [
+        { label: 'Elysia on Bun', detail: 'A lightweight, TypeScript-native HTTP framework on the Bun runtime instead of a heavier Node/Express stack.' },
+        { label: 'Per-check persistence', detail: 'Every check (up/down, status code, latency) is its own Prisma row, so real history and trends are queryable, not just a live flag.' },
+        { label: 'Timeout-bounded checks', detail: 'A 5-second AbortSignal.timeout on every fetch, so one slow or hanging endpoint can\'t stall the whole check loop.' },
+      ],
+    },
   },
   {
     id: 'asistenit', title: 'asistenIT', cat: 'ai', catLabel: 'AI assistant', status: 'wip',
     desc: 'An AI assistant for everyday IT tasks: answering questions, drafting scripts, and automating small chores from one chat interface.',
-    stack: ['Python', 'LLM'],
+    stack: ['Python', 'Hugging Face', 'LLM'],
     github: null, demo: null,
+    caseStudy: {
+      problem:
+        'Switching between five different single-purpose CLI tools for everyday IT tasks -- quick scripts, explanations, lookups -- breaks focus. A single chat interface that can actually help across all of them is faster.',
+      approach:
+        'A lightweight Python chat client against Hugging Face\'s hosted Inference API (Zephyr-7B-beta), with a system prompt explicitly tuned to treat follow-up questions as continuations of the same conversation instead of resetting context on every turn, and to stay on-topic rather than drifting.',
+      architecture: [
+        { label: 'Hugging Face Inference Client', detail: 'Calls a hosted Zephyr-7B endpoint rather than self-hosting a model, keeping the client itself thin.' },
+        { label: 'Context-aware system prompt', detail: 'Explicitly instructed to treat a follow-up as continuing the prior answer\'s context, not a fresh, unrelated question.' },
+      ],
+    },
   },
   {
     id: 'angkringan', title: 'Angkringan Sedulur', cat: 'web', catLabel: 'Landing page', status: 'live',
     desc: 'Landing page for a local food business, hand-built with clean HTML, CSS, and JavaScript.',
     stack: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/VeldanDev/angkringan-sedulur', demo: null,
+    caseStudy: {
+      problem:
+        'A local food business needs an online presence, but most "quick landing pages" end up as an obviously templated Wix or Carrd page with no real craft behind it.',
+      approach:
+        'Hand-built with plain HTML, CSS, and JavaScript -- no framework, no build step -- the smallest stack that still loads fast and looks intentional for a business that just needs one good page.',
+      architecture: [
+        { label: 'Static HTML/CSS/JS', detail: 'No framework or build pipeline for a single-page site that doesn\'t need one.' },
+      ],
+      screenshot: '/projects/angkringan-demo.png',
+      screenshotAlt: 'Angkringan Sedulur landing page hero section',
+    },
   },
   {
     id: 'cords', title: 'Cords', cat: 'mobile', catLabel: 'Mobile app', status: 'wip',
     desc: 'Cross-platform mobile app built with Capacitor, packaging a web UI into native Android and iOS.',
-    stack: ['Capacitor', 'TypeScript', 'Mobile'],
+    stack: ['Next.js', 'Supabase', 'Capacitor'],
     github: null, demo: null,
+    caseStudy: {
+      problem:
+        'Shipping to both Android and iOS from one codebase usually means committing to React Native\'s ecosystem, or paying the cost of two separate native codebases. Capacitor offers a third path for a team that already has a real web app.',
+      approach:
+        'The actual application -- UI and business logic -- is a Next.js 15 / React 19 app with Supabase handling auth, Postgres, and real-time subscriptions. Capacitor wraps that same web build into native Android and iOS shells, so the mobile apps ship the same code the web version runs.',
+      architecture: [
+        { label: 'Next.js 15 + React 19', detail: 'The real app logic and UI, shared across web and both mobile platforms.' },
+        { label: 'Supabase', detail: 'Auth, Postgres, and real-time subscriptions without standing up a separate backend service.' },
+        { label: 'Capacitor', detail: 'Wraps the web build into native Android/iOS projects; an apk build script is wired directly into package.json.' },
+      ],
+    },
   },
 ];
 
