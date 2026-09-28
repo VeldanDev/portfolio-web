@@ -71,19 +71,19 @@ const PROJECTS: Project[] = [
     id: 'shift-drives', title: 'Shift Drives', cat: 'web', catLabel: 'Platform', status: 'live',
     desc: 'Full-stack digital agency platform built with Next.js: service catalog, tiered pricing, and a WhatsApp-integrated consultation flow.',
     stack: ['Next.js', 'TypeScript', 'Tailwind', 'Vercel'],
-    github: 'https://github.com/VeldanDev/shift-drives', demo: 'https://shift-drives.vercel.app',
+    github: null, demo: 'https://shift-drives.vercel.app',
   },
   {
     id: 'prime-property', title: 'Prime Property', cat: 'web', catLabel: 'Web app', status: 'done',
     desc: 'Property management platform with listings, authentication, and an admin dashboard, built on Next.js and Prisma.',
     stack: ['Next.js', 'Prisma', 'PostgreSQL', 'Auth'],
-    github: 'https://github.com/VeldanDev/prime-property', demo: null,
+    github: null, demo: null,
   },
   {
     id: 'hl-finance', title: 'HL Internal Finance', cat: 'web', catLabel: 'Web app', status: 'done',
     desc: 'Internal finance management app for tracking budgets, transactions, and reporting inside an organization.',
     stack: ['Next.js', 'TypeScript', 'Prisma'],
-    github: 'https://github.com/VeldanDev/hl-internal-finance', demo: null,
+    github: null, demo: null,
   },
   {
     id: 'uptimeguard', title: 'UptimeGuard', cat: 'web', catLabel: 'Service', status: 'wip',
@@ -107,7 +107,7 @@ const PROJECTS: Project[] = [
     id: 'cords', title: 'Cords', cat: 'mobile', catLabel: 'Mobile app', status: 'wip',
     desc: 'Cross-platform mobile app built with Capacitor, packaging a web UI into native Android and iOS.',
     stack: ['Capacitor', 'TypeScript', 'Mobile'],
-    github: 'https://github.com/VeldanDev/cords', demo: null,
+    github: null, demo: null,
   },
 ];
 
