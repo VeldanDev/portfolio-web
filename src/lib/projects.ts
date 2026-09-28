@@ -98,6 +98,26 @@ export const PROJECTS: Project[] = [
     },
   },
   {
+    id: 'tiburon-web', title: 'Tiburon Web', cat: 'ai', catLabel: 'AI systems', status: 'wip', featured: true,
+    desc: 'A chat interface for Tiburon built around one rule: every answer that draws on a document shows the exact source, as a clickable card with the matching text highlighted, not just a name to trust. Indexes PDFs, Word, Excel, and CSV exports, including scanned documents via OCR.',
+    stack: ['Next.js', 'React', 'TypeScript', 'Tesseract.js', 'shadcn/ui'],
+    github: null, demo: null,
+    caseStudy: {
+      problem:
+        'An agent that answers from your own documents is only trustworthy if you can check its work. A citation that just names a filename is still a claim to take on faith -- the failure mode this project is built against is a model that sounds certain about something the source material never actually said.',
+      approach:
+        'Answers cite sources as clickable cards that open the original excerpt with the matching words highlighted, so checking a claim takes one click instead of a manual search through the source file. Before that citation can happen, the corpus itself has to be readable: PDFs, Word docs, Excel exports (including the CSV/TSV shapes Indonesian point-of-sale software actually produces), and scanned paper via Tesseract OCR all get indexed as searchable text. Secrets and tokens are redacted before any text reaches the chat history, and every tool the agent can call is permission-gated -- nothing with write, delete, or exec in its name runs without an explicit yes.',
+      architecture: [
+        { label: 'Verifiable citations', detail: 'Every sourced claim links to a card showing the real excerpt from the corpus, matching text highlighted -- not a filename asserted from memory.' },
+        { label: 'Document indexing', detail: 'PDF, Word, Excel, CSV/TSV exports, and scanned documents (via Tesseract OCR) all get indexed into the same searchable corpus.' },
+        { label: 'Redaction before storage', detail: 'Keys and tokens are stripped before anything is written into chat history, so a pasted credential never lingers in a saved conversation.' },
+        { label: 'Permission-gated tools', detail: 'Every agent-callable tool is read-only until an explicit permission layer exists; a test enforces this by rejecting any tool name containing write, delete, or exec.' },
+      ],
+      screenshot: '/projects/tiburon-web-demo.png',
+      screenshotAlt: 'Tiburon Web chat interface showing an answer with clickable source citations (price-list.csv, warranty-policy.txt)',
+    },
+  },
+  {
     id: 'specter', title: 'Specter 2.0', cat: 'security', catLabel: 'OSINT', status: 'live',
     desc: 'CLI OSINT and reconnaissance toolkit -- network scanning, Wi-Fi and Bluetooth analysis, packet sniffing, and threat detection -- built lean enough to run on a Raspberry Pi Zero.',
     stack: ['Python', 'OSINT', 'Recon', 'CLI'],
