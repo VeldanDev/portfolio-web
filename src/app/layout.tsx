@@ -4,6 +4,7 @@ import './globals.css';
 import Sidebar from '@/components/layout/Sidebar';
 import MobileNav from '@/components/layout/MobileNav';
 import CommandPalette from '@/components/CommandPalette';
+import Cursor from '@/components/interactive/Cursor';
 
 const display = Bricolage_Grotesque({
   variable: '--font-display',
@@ -62,6 +63,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full bg-[#0a0b0e]">
+        <Cursor />
         <Sidebar />
         <MobileNav />
         <CommandPalette />
