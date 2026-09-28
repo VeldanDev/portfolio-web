@@ -398,6 +398,11 @@ export default function HomeClient({ github, wakatime }: Props) {
         </motion.div>
       </section>
 
+      {/* ═══ LIVE STATS (merged from the old /dashboard page) — right after
+          the hero, so it's the first thing you see after scrolling, not
+          buried a section deeper ═══ */}
+      <StatsSection github={github} wakatime={wakatime} />
+
       {/* ═══ DOMAINS ═══ */}
       <section className="px-6 md:px-10 pb-20" style={{ fontFamily: 'var(--font-sans-body)' }}>
         <div className="max-w-5xl mx-auto grid sm:grid-cols-3 gap-4">
@@ -425,9 +430,6 @@ export default function HomeClient({ github, wakatime }: Props) {
           ))}
         </div>
       </section>
-
-      {/* ═══ LIVE STATS (merged from the old /dashboard page) ═══ */}
-      <StatsSection github={github} wakatime={wakatime} />
 
       {/* ═══ FEATURED ═══ */}
       <section className="px-6 md:px-10 pb-28" style={{ fontFamily: 'var(--font-sans-body)' }}>
