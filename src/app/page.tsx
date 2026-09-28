@@ -1,32 +1,28 @@
 import HomeClient from '@/components/home/HomeClient';
+import { getGitHubStats } from '@/lib/stats/github';
+import { getWakaTimeStats } from '@/lib/stats/wakatime';
 import type { GitHubStats, WakaTimeStats } from '@/types/index';
 
 // Home now also carries what used to live at /dashboard -- real GitHub and
-// WakaTime numbers fetched server-side, same pattern as the old dashboard
-// page had (parallel fetches, 1h revalidate, honest null on failure).
-
-function getBaseUrl(): string {
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  if (process.env.NEXT_PUBLIC_APP_URL) return process.env.NEXT_PUBLIC_APP_URL;
-  return 'http://localhost:3000';
-}
+// WakaTime numbers, fetched by calling the same functions the API routes
+// use directly (not by fetching this app's own /api/* routes over HTTP,
+// which can fail silently during build/ISR since the route may not be
+// reachable yet at that point).
 
 async function fetchGitHub(): Promise<GitHubStats | null> {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/github`, { next: { revalidate: 3600 } });
-    if (!res.ok) return null;
-    return res.json() as Promise<GitHubStats>;
-  } catch {
+    return await getGitHubStats();
+  } catch (err) {
+    console.error('[page:/] GitHub stats failed:', err);
     return null;
   }
 }
 
 async function fetchWakaTime(): Promise<WakaTimeStats | null> {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/wakatime`, { next: { revalidate: 3600 } });
-    if (!res.ok) return null;
-    return res.json() as Promise<WakaTimeStats>;
-  } catch {
+    return await getWakaTimeStats();
+  } catch (err) {
+    console.error('[page:/] WakaTime stats failed:', err);
     return null;
   }
 }
