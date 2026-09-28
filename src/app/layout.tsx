@@ -23,10 +23,33 @@ const mono = IBM_Plex_Mono({
   weight: ['400', '500', '600'],
 });
 
+// No production domain until this deploys to Vercel — falls back to
+// localhost rather than guessing a URL that doesn't exist yet. Set
+// NEXT_PUBLIC_APP_URL (or VERCEL_URL, which Vercel sets automatically)
+// once it's live.
+const SITE_URL =
+  process.env.NEXT_PUBLIC_APP_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3002');
+const TITLE = 'Aditya Surya Putra · AI & Security Engineer';
+const DESCRIPTION =
+  'AI Engineer, Cybersecurity Engineer, and Software Developer. I build autonomous AI agents, offensive security tooling, and production software.';
+
 export const metadata: Metadata = {
-  title: 'Aditya Surya Putra · AI & Security Engineer',
-  description:
-    'AI Engineer, Cybersecurity Engineer, and Software Developer. I build autonomous AI agents, offensive security tooling, and production software.',
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: SITE_URL,
+    siteName: 'Aditya Surya Putra',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+  },
 };
 
 export default function RootLayout({
