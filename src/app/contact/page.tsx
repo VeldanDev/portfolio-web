@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Mail, MessageCircle, MapPin, GitBranch, Music2, ArrowUpRight, Send } from 'lucide-react';
+import Magnetic from '@/components/interactive/Magnetic';
 
 const C = {
   bg: '#0a0b0e', panel: '#101218', panel2: '#0d0f14', line: '#1c2029', line2: '#242a35',
@@ -94,11 +95,13 @@ export default function ContactPage() {
               <label htmlFor="message" className="text-xs" style={{ color: C.muted }}>Message</label>
               <textarea id="message" rows={5} value={form.message} onChange={(e) => set('message', e.target.value)} placeholder="Tell me what you're working on." className={`${inputCls} resize-none`} style={inputStyle} />
             </div>
-            <button type="submit" disabled={!form.message}
-              className="spec-btn flex items-center justify-center gap-2 px-5 py-3 rounded-lg text-sm font-medium disabled:opacity-40"
-              style={{ background: SPECTRAL, color: '#07080a' }}>
-              <Send size={14} /> Open in email
-            </button>
+            <Magnetic className="w-full" strength={0.2}>
+              <button type="submit" disabled={!form.message}
+                className="spec-btn flex items-center justify-center gap-2 px-5 py-3 rounded-lg text-sm font-medium disabled:opacity-40 w-full"
+                style={{ background: SPECTRAL, color: '#07080a' }}>
+                <Send size={14} /> Open in email
+              </button>
+            </Magnetic>
             <p className="text-[11px] text-center" style={{ color: C.dim }}>This opens your email app with the message ready to send.</p>
           </motion.form>
         </div>

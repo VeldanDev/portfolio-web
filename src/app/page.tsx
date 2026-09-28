@@ -1,10 +1,12 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowUpRight, GitBranch, Boxes, ShieldHalf, Cpu } from 'lucide-react';
+import Tilt from '@/components/interactive/Tilt';
+import Magnetic from '@/components/interactive/Magnetic';
 
 /* ── Spectral palette (local, self-contained) ───────────────────────────── */
 const C = {
@@ -219,6 +221,15 @@ export default function Home() {
   const glowRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLElement>(null);
 
+  // Cinematic depth on scroll: the grid recedes and fades faster than the
+  // content above it. useTransform maps scroll progress straight to a
+  // transform, so framer batches it on the compositor -- no React re-render
+  // per scroll tick.
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
+  const gridY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const gridOpacity = useTransform(scrollYProgress, [0, 1], [0.5, 0]);
+  const heroContentY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
+
   // Cursor-follow spectral glow — rAF + transform, pointer-fine only.
   useEffect(() => {
     const glow = glowRef.current, hero = heroRef.current;
@@ -256,20 +267,25 @@ export default function Home() {
           }}
           aria-hidden
         />
-        {/* faint grid */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.5]"
+        {/* faint grid — recedes and fades on scroll for a sense of depth */}
+        <motion.div
+          className="pointer-events-none absolute inset-0"
           style={{
             backgroundImage:
               `linear-gradient(${C.line} 1px,transparent 1px),linear-gradient(90deg,${C.line} 1px,transparent 1px)`,
             backgroundSize: '46px 46px',
             maskImage: 'radial-gradient(circle at 30% 20%, black, transparent 75%)',
             WebkitMaskImage: 'radial-gradient(circle at 30% 20%, black, transparent 75%)',
+            y: gridY,
+            opacity: gridOpacity,
           }}
           aria-hidden
         />
 
-        <div className="relative max-w-5xl mx-auto grid lg:grid-cols-[1fr_300px] gap-12 items-center">
+        <motion.div
+          className="relative max-w-5xl mx-auto grid lg:grid-cols-[1fr_300px] gap-12 items-center"
+          style={{ y: heroContentY }}
+        >
           <div>
             <motion.div
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
@@ -325,14 +341,16 @@ export default function Home() {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <Link
-                href="/projects"
-                className="spec-btn group inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-medium"
-                style={{ color: '#07080a', background: SPECTRAL }}
-              >
-                View Projects
-                <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
+              <Magnetic>
+                <Link
+                  href="/projects"
+                  className="spec-btn group inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-medium"
+                  style={{ color: '#07080a', background: SPECTRAL }}
+                >
+                  View Projects
+                  <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </Link>
+              </Magnetic>
               <Link
                 href="/dashboard"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm border transition-colors duration-200"
@@ -346,7 +364,7 @@ export default function Home() {
           {/* photo + signal panel */}
           <div className="flex flex-col gap-4">
             {/* spectral-framed portrait */}
-            <div className="group relative mx-auto lg:mx-0 w-full max-w-[260px]">
+            <Tilt max={10} className="group relative mx-auto lg:mx-0 w-full max-w-[260px]">
               <div className="rounded-2xl p-[1.5px]" style={{ background: SPECTRAL }}>
                 <div className="relative rounded-2xl overflow-hidden" style={{ background: C.panel2 }}>
                   <Image
@@ -364,10 +382,10 @@ export default function Home() {
                   />
                 </div>
               </div>
-            </div>
+            </Tilt>
             <SignalPanel />
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* ═══ DOMAINS ═══ */}
@@ -421,10 +439,13 @@ export default function Home() {
 
           <div className="grid sm:grid-cols-2 gap-4">
             {FEATURED.map((p, k) => (
-              <motion.article
+              <motion.div
                 key={p.id}
                 variants={fadeUp} initial="hidden" whileInView="visible" viewport={view}
                 transition={{ delay: k * 0.07, duration: 0.5, ease }}
+              >
+              <Tilt max={5} scale={1.01}>
+              <article
                 className="spec-card group relative flex flex-col rounded-xl border p-6 overflow-hidden"
                 style={{ borderColor: C.line, background: C.panel }}
               >
@@ -469,7 +490,9 @@ export default function Home() {
                   )}
                 </div>
                 <span className="absolute -bottom-px left-0 h-px w-0 group-hover:w-full transition-all duration-500" style={{ background: SPECTRAL }} />
-              </motion.article>
+              </article>
+              </Tilt>
+              </motion.div>
             ))}
           </div>
         </div>

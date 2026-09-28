@@ -259,6 +259,19 @@
 
 ::selection { background-color: rgba(139,124,255,0.25); color: #eaecef; }
 
+/* ─── Custom cursor — only active once JS confirms a fine pointer and no
+   reduced-motion preference (see Cursor.tsx). Native cursor is the default
+   and stays that way if JS never adds the class, so nothing breaks. ────── */
+html.has-custom-cursor,
+html.has-custom-cursor * { cursor: none !important; }
+html.has-custom-cursor .cursor-dot,
+html.has-custom-cursor .cursor-ring { display: block; }
+
+/* ─── 3D tilt (Tilt.tsx) — GPU transform only, perspective set on the
+   parent so children keep flat shadows/borders. ─────────────────────── */
+.tilt-wrap { perspective: 900px; }
+.tilt-el   { transform-style: preserve-3d; transition: transform 0.4s cubic-bezier(.23,1,.32,1); will-change: transform; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .spec-bar   { animation: none; transform: scaleY(0.6); }

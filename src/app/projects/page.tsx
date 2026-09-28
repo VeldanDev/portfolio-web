@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { GitBranch, ArrowUpRight } from 'lucide-react';
 import CountUp from '@/components/CountUp';
+import Tilt from '@/components/interactive/Tilt';
 
 /* ── Spectral palette ────────────────────────────────────────────────────── */
 const C = {
@@ -123,10 +124,14 @@ function Card({ p, i }: { p: Project; i: number }) {
   const cat = CAT_COLOR[p.cat];
   const st = ST_META[p.status];
   return (
-    <motion.article
+    <motion.div
       layout variants={cardV} initial="hidden" animate="visible" exit="exit"
       transition={{ delay: i * 0.04, duration: 0.4, ease }}
-      className={`spec-card group relative flex flex-col rounded-xl border p-6 overflow-hidden ${p.featured ? 'sm:col-span-2' : ''}`}
+      className={p.featured ? 'sm:col-span-2' : undefined}
+    >
+    <Tilt max={4} scale={1.008}>
+    <article
+      className="spec-card group relative flex flex-col rounded-xl border p-6 overflow-hidden h-full"
       style={{ borderColor: C.line, background: C.panel }}
     >
       <div className="flex items-center justify-between mb-4">
@@ -178,7 +183,9 @@ function Card({ p, i }: { p: Project; i: number }) {
         )}
       </div>
       <span className="absolute -bottom-px left-0 h-px w-0 group-hover:w-full transition-all duration-500" style={{ background: SPECTRAL }} />
-    </motion.article>
+    </article>
+    </Tilt>
+    </motion.div>
   );
 }
 
