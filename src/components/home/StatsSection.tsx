@@ -150,10 +150,7 @@ export default function StatsSection({ github, wakatime }: Props) {
           transition={{ duration: 0.5, ease }}
           className="mb-8"
         >
-          <p className="text-[11px] tracking-[0.25em] uppercase mb-2" style={{ color: C.dim, fontFamily: 'var(--font-plex-mono)' }}>proof of work</p>
-          <h2 className="text-3xl font-bold tracking-tight" style={{ fontFamily: 'var(--font-display)', color: C.text }}>
-            Real numbers, not claims
-          </h2>
+          <p className="text-[11px] tracking-[0.25em] uppercase" style={{ color: C.dim, fontFamily: 'var(--font-plex-mono)' }}>proof of work</p>
         </motion.div>
 
         {github && (
@@ -190,9 +187,12 @@ export default function StatsSection({ github, wakatime }: Props) {
             >
               <p className="text-[10px] uppercase tracking-widest mb-4" style={{ color: C.dim, fontFamily: 'var(--font-plex-mono)' }}>editor time · wakatime</p>
               <div className="flex flex-col gap-3">
-                {wakatime.topLanguages.slice(0, 5).map((lang, i) => (
-                  <LangBar key={lang.name} name={lang.name} percentage={lang.percentage} color={lang.color ?? C.cyan} delay={i * 0.04} />
-                ))}
+                {wakatime.topLanguages
+                  .filter((lang) => lang.name.toLowerCase() !== 'markdown')
+                  .slice(0, 5)
+                  .map((lang, i) => (
+                    <LangBar key={lang.name} name={lang.name} percentage={lang.percentage} color={lang.color ?? C.cyan} delay={i * 0.04} />
+                  ))}
               </div>
             </motion.div>
           )}
