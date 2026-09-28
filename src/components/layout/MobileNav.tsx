@@ -7,19 +7,19 @@ import {
   User,
   Trophy,
   FolderGit2,
-  LayoutDashboard,
   Mail,
   Bot,
 } from 'lucide-react';
 
+const C = { panel: '#0d0f14', line: '#1c2029', muted: '#8a9099', violet: '#8b7cff' };
+
 const NAV_ITEMS = [
-  { href: '/',             label: 'Home',         icon: Home            },
-  { href: '/about',        label: 'About',        icon: User            },
-  { href: '/achievements', label: 'Achievements', icon: Trophy          },
-  { href: '/projects',     label: 'Projects',     icon: FolderGit2      },
-  { href: '/dashboard',    label: 'Dashboard',    icon: LayoutDashboard },
-  { href: '/contact',      label: 'Contact',      icon: Mail            },
-  { href: '/smart-talk',   label: 'Smart Talk',   icon: Bot             },
+  { href: '/',             label: 'Home',         icon: Home       },
+  { href: '/about',        label: 'About',        icon: User       },
+  { href: '/achievements', label: 'Achievements', icon: Trophy     },
+  { href: '/projects',     label: 'Projects',     icon: FolderGit2 },
+  { href: '/contact',      label: 'Contact',      icon: Mail       },
+  { href: '/smart-talk',   label: 'Smart Talk',   icon: Bot        },
 ] as const;
 
 function isActive(pathname: string, href: string) {
@@ -31,7 +31,7 @@ export default function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#111111] border-t border-[#1f1f1f]">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 border-t" style={{ background: C.panel, borderColor: C.line }}>
       <ul className="flex items-center justify-around px-1 py-2">
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
           const active = isActive(pathname, href);
@@ -40,12 +40,8 @@ export default function MobileNav() {
               <Link
                 href={href}
                 aria-label={label}
-                className={[
-                  'flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-150',
-                  active
-                    ? 'text-[#4ade80] bg-[#4ade80]/10'
-                    : 'text-[#6b7280] hover:text-[#f1f1f1] hover:bg-[#1a1a1a]',
-                ].join(' ')}
+                className="flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-150"
+                style={active ? { color: C.violet, background: 'rgba(139,124,255,0.12)' } : { color: C.muted }}
               >
                 <Icon size={19} strokeWidth={active ? 2 : 1.5} />
               </Link>

@@ -3,14 +3,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  Home, User, Trophy, FolderGit2, LayoutDashboard, Mail, Bot, GitBranch, ExternalLink,
+  Home, User, Trophy, FolderGit2, Mail, Bot, GitBranch, ExternalLink,
 } from 'lucide-react';
 
 const NAV_ITEMS = [
   { href: '/',             label: 'Home',         icon: Home },
   { href: '/about',        label: 'About',        icon: User },
   { href: '/projects',     label: 'Projects',     icon: FolderGit2 },
-  { href: '/dashboard',    label: 'Dashboard',    icon: LayoutDashboard },
   { href: '/achievements', label: 'Achievements', icon: Trophy },
   { href: '/smart-talk',   label: 'Smart Talk',   icon: Bot },
   { href: '/contact',      label: 'Contact',      icon: Mail },
