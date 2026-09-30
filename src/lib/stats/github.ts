@@ -121,7 +121,7 @@ const NON_CODE = new Set([
   'json', 'yaml', 'toml', 'ini', 'dotenv', 'editorconfig', 'gitignore',
 ]);
 
-// Curated primary stack — reflects ALL projects (public, private, and local), which
+// Curated primary stack, reflects ALL projects (public, private, and local), which
 // public-repo byte counts cannot: the byte view is dominated by generated CSS/HTML and
 // misses private TS apps (prime-property, hl-finance, shift-drives) and local Python
 // tools. Ordered by real emphasis across the whole body of work. Colors are GitHub's.
@@ -220,7 +220,7 @@ export async function getGitHubStats(): Promise<GitHubStats> {
   const username = process.env.GITHUB_USERNAME;
 
   if (!token || !username) {
-    console.warn('[stats/github] GITHUB_TOKEN or GITHUB_USERNAME not set — returning fallback');
+    console.warn('[stats/github] GITHUB_TOKEN or GITHUB_USERNAME not set, returning fallback');
     return githubFallback();
   }
 

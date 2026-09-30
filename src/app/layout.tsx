@@ -24,7 +24,7 @@ const mono = IBM_Plex_Mono({
   weight: ['400', '500', '600'],
 });
 
-// No production domain until this deploys to Vercel — falls back to
+// No production domain until this deploys to Vercel, falls back to
 // localhost rather than guessing a URL that doesn't exist yet. Set
 // NEXT_PUBLIC_APP_URL (or VERCEL_URL, which Vercel sets automatically)
 // once it's live.

@@ -115,7 +115,7 @@ export async function getWakaTimeStats(): Promise<WakaTimeStats> {
   const apiKey = process.env.WAKATIME_API_KEY;
 
   if (!apiKey) {
-    console.warn('[stats/wakatime] WAKATIME_API_KEY not set — returning fallback');
+    console.warn('[stats/wakatime] WAKATIME_API_KEY not set, returning fallback');
     return wakatimeFallback();
   }
 
@@ -130,7 +130,7 @@ export async function getWakaTimeStats(): Promise<WakaTimeStats> {
   });
 
   if (res.status === 403 || res.status === 401) {
-    throw new Error(`WakaTime auth failed (${res.status}) — check WAKATIME_API_KEY`);
+    throw new Error(`WakaTime auth failed (${res.status}), check WAKATIME_API_KEY`);
   }
   if (!res.ok) {
     throw new Error(`WakaTime HTTP ${res.status}: ${await res.text()}`);

@@ -20,7 +20,7 @@ const MILESTONES = [
   { icon: GraduationCap, title: 'Tech educator', meta: '@veldorable · explaining tech', color: C.live, href: 'https://www.tiktok.com/@veldorable' },
 ];
 
-/* Credentials being pursued — honestly marked, filled with real badges as earned */
+/* Credentials being pursued, honestly marked, filled with real badges as earned */
 const PURSUING = [
   { name: 'Cisco Ethical Hacker', track: 'Security', status: 'in progress', color: C.cyan },
   { name: 'TryHackMe learning path', track: 'Security', status: 'in progress', color: C.cyan },

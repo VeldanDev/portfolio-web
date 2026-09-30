@@ -31,7 +31,7 @@ export default function ContactPage() {
     e.preventDefault();
     if (!form.message) return;
     const subject = encodeURIComponent(form.subject || `Portfolio message from ${form.name || 'someone'}`);
-    const body = encodeURIComponent(`${form.message}\n\n— ${form.name || ''}`);
+    const body = encodeURIComponent(`${form.message}\n\n${form.name || ''}`);
     window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
   }
 

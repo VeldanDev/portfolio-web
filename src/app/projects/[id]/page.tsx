@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const project = PROJECTS.find((p) => p.id === id && p.caseStudy);
   if (!project) return {};
   return {
-    title: `${project.title} — Case Study`,
+    title: `${project.title}: Case Study`,
     description: project.caseStudy!.problem,
   };
 }

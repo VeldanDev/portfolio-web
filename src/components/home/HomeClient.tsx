@@ -237,7 +237,7 @@ export default function HomeClient({ github, wakatime }: Props) {
   const gridOpacity = useTransform(scrollYProgress, [0, 1], [0.5, 0]);
   const heroContentY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
-  // Cursor-follow spectral glow — rAF + transform, pointer-fine only.
+  // Cursor-follow spectral glow, rAF + transform, pointer-fine only.
   useEffect(() => {
     const glow = glowRef.current, hero = heroRef.current;
     if (!glow || !hero) return;
@@ -274,7 +274,7 @@ export default function HomeClient({ github, wakatime }: Props) {
           }}
           aria-hidden
         />
-        {/* faint grid — recedes and fades on scroll for a sense of depth */}
+        {/* faint grid, recedes and fades on scroll for a sense of depth */}
         <motion.div
           className="pointer-events-none absolute inset-0"
           style={{
@@ -398,7 +398,7 @@ export default function HomeClient({ github, wakatime }: Props) {
         </motion.div>
       </section>
 
-      {/* ═══ LIVE STATS (merged from the old /dashboard page) — right after
+      {/* ═══ LIVE STATS (merged from the old /dashboard page), right after
           the hero, so it's the first thing you see after scrolling, not
           buried a section deeper ═══ */}
       <StatsSection github={github} wakatime={wakatime} />

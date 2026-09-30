@@ -1,12 +1,12 @@
 import { ImageResponse } from 'next/og';
 
-// Site-wide social preview — what shows up when this portfolio's link is
+// Site-wide social preview, what shows up when this portfolio's link is
 // shared on LinkedIn, X, or Discord. Without this the link renders bare.
 // Edge runtime: ImageResponse tries to fetch its default font over a URL,
 // which fails at Node build time but works fine on Edge.
 export const runtime = 'edge';
 
-export const alt = 'Aditya Surya Putra — AI & Security Engineer';
+export const alt = 'Aditya Surya Putra, AI & Security Engineer';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 

@@ -322,7 +322,7 @@ export default function SmartTalkPage() {
             <div ref={bottomRef} />
           </div>
 
-          {/* Suggested chips — shown after first message */}
+          {/* Suggested chips, shown after first message */}
           {!isEmpty && (
             <div
               className="flex gap-2 px-4 py-2 border-t overflow-x-auto scrollbar-none"
