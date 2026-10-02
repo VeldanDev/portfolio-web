@@ -8,7 +8,7 @@ const C = {
   bg: '#0a0b0e', panel: '#101218', panel2: '#0d0f14', line: '#1c2029', line2: '#242a35',
   text: '#eaecef', muted: '#8a9099', dim: '#565c66', violet: '#8b7cff',
 };
-const SPECTRAL = 'linear-gradient(90deg,#8b7cff 0%,#6ea8ff 45%,#45e0d0 100%)';
+const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';
 
 export function generateStaticParams() {
   return PROJECTS.filter((p) => p.caseStudy).map((p) => ({ id: p.id }));

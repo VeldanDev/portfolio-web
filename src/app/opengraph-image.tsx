@@ -20,7 +20,7 @@ const C = {
   violet: '#8b7cff',
   cyan: '#45e0d0',
 };
-const SPECTRAL = 'linear-gradient(90deg,#8b7cff 0%,#6ea8ff 45%,#45e0d0 100%)';
+const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';
 
 export default function OpengraphImage() {
   const bars = Array.from({ length: 22 });

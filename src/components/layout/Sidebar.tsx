@@ -20,7 +20,7 @@ const SOCIALS = [
   { href: 'https://www.tiktok.com/@veldorable', label: 'TikTok',  icon: ExternalLink },
 ] as const;
 
-const SPECTRAL = 'linear-gradient(90deg,#8b7cff,#45e0d0)';
+const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';
 
 function isActive(pathname: string, href: string) {
   if (href === '/') return pathname === '/';

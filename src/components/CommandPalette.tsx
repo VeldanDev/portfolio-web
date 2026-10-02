@@ -7,7 +7,7 @@ import {
   GitBranch, Package, Copy, ArrowUpRight, Search, CornerDownLeft,
 } from 'lucide-react';
 
-const SPECTRAL = 'linear-gradient(90deg,#8b7cff,#45e0d0)';
+const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';
 const C = { panel: '#101218', panel2: '#0d0f14', line: '#1c2029', line2: '#242a35', text: '#eaecef', muted: '#8a9099', dim: '#565c66', violet: '#8b7cff' };
 
 type Item = {

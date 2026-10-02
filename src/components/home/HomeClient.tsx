@@ -25,7 +25,7 @@ const C = {
   live: '#3ee6a0',
   wip: '#f5a524',
 };
-const SPECTRAL = 'linear-gradient(90deg,#8b7cff 0%,#6ea8ff 45%,#45e0d0 100%)';
+const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';
 
 /* ── Name decode: rAF writes textContent (no per-frame React state) ──────── */
 const GLYPHS = '01<>/\\{}#$%&*+=ABCDEF';
@@ -225,7 +225,6 @@ interface Props {
 
 /* ── Page ────────────────────────────────────────────────────────────────── */
 export default function HomeClient({ github, wakatime }: Props) {
-  const glowRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLElement>(null);
 
   // Cinematic depth on scroll: the grid recedes and fades faster than the
@@ -233,28 +232,7 @@ export default function HomeClient({ github, wakatime }: Props) {
   // transform, so framer batches it on the compositor -- no React re-render
   // per scroll tick.
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const gridY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
-  const gridOpacity = useTransform(scrollYProgress, [0, 1], [0.5, 0]);
   const heroContentY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
-
-  // Cursor-follow spectral glow, rAF + transform, pointer-fine only.
-  useEffect(() => {
-    const glow = glowRef.current, hero = heroRef.current;
-    if (!glow || !hero) return;
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    let raf = 0, tx = 0, ty = 0;
-    const move = (e: PointerEvent) => {
-      const r = hero.getBoundingClientRect();
-      tx = e.clientX - r.left; ty = e.clientY - r.top;
-      if (!raf) raf = requestAnimationFrame(() => {
-        glow.style.transform = `translate3d(${tx - 260}px, ${ty - 260}px, 0)`;
-        raf = 0;
-      });
-    };
-    hero.addEventListener('pointermove', move);
-    return () => { hero.removeEventListener('pointermove', move); if (raf) cancelAnimationFrame(raf); };
-  }, []);
 
   return (
     <div style={{ background: C.bg, color: C.text }}>
@@ -264,31 +242,6 @@ export default function HomeClient({ github, wakatime }: Props) {
         className="relative overflow-hidden px-6 md:px-10 pt-16 md:pt-24 pb-20"
         style={{ fontFamily: 'var(--font-sans-body)' }}
       >
-        {/* cursor glow */}
-        <div
-          ref={glowRef}
-          className="pointer-events-none absolute left-0 top-0 w-[520px] h-[520px] rounded-full opacity-40 hidden md:block"
-          style={{
-            background: 'radial-gradient(circle, rgba(139,124,255,0.16), rgba(69,224,208,0.06) 40%, transparent 70%)',
-            willChange: 'transform',
-          }}
-          aria-hidden
-        />
-        {/* faint grid, recedes and fades on scroll for a sense of depth */}
-        <motion.div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage:
-              `linear-gradient(${C.line} 1px,transparent 1px),linear-gradient(90deg,${C.line} 1px,transparent 1px)`,
-            backgroundSize: '46px 46px',
-            maskImage: 'radial-gradient(circle at 30% 20%, black, transparent 75%)',
-            WebkitMaskImage: 'radial-gradient(circle at 30% 20%, black, transparent 75%)',
-            y: gridY,
-            opacity: gridOpacity,
-          }}
-          aria-hidden
-        />
-
         <motion.div
           className="relative max-w-5xl mx-auto grid lg:grid-cols-[1fr_300px] gap-12 items-center"
           style={{ y: heroContentY }}
@@ -297,12 +250,11 @@ export default function HomeClient({ github, wakatime }: Props) {
             <motion.div
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease }}
-              className="inline-flex items-center gap-2 mb-8 px-3 py-1.5 rounded-full border"
-              style={{ borderColor: C.line2, background: C.panel2 }}
+              className="flex items-center gap-2 mb-8"
             >
-              <span className="spec-pulse w-1.5 h-1.5 rounded-full" style={{ background: C.live }} />
-              <span className="text-[11px] tracking-[0.18em]" style={{ color: C.muted }}>
-                AVAILABLE FOR WORK
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: C.live }} />
+              <span className="text-sm" style={{ color: C.muted }}>
+                Available for work
               </span>
             </motion.div>
 
@@ -315,10 +267,7 @@ export default function HomeClient({ github, wakatime }: Props) {
               <span style={{ color: C.dim }}><DecodeName text="Surya Putra" /></span>
             </h1>
 
-            {/* spectral prism sweep */}
-            <div className="relative h-px w-full max-w-sm mb-7 overflow-hidden" style={{ background: C.line }}>
-              <div className="spec-sweep absolute inset-y-0 w-1/3" style={{ background: SPECTRAL }} />
-            </div>
+            <div className="h-px w-full max-w-sm mb-7" style={{ background: C.line }} />
 
             <div className="text-lg md:text-xl mb-6 h-8" style={{ fontFamily: 'var(--font-plex-mono)' }}>
               <CyclingRole />

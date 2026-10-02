@@ -15,7 +15,7 @@ const C = {
   text: '#eaecef', muted: '#8a9099', dim: '#565c66',
   violet: '#8b7cff', cyan: '#45e0d0', blue: '#6ea8ff', live: '#3ee6a0', wip: '#f5a524', done: '#6ea8ff',
 };
-const SPECTRAL = 'linear-gradient(90deg,#8b7cff 0%,#6ea8ff 45%,#45e0d0 100%)';
+const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 const cardV = { hidden: { opacity: 0, y: 14, scale: 0.98 }, visible: { opacity: 1, y: 0, scale: 1 }, exit: { opacity: 0, scale: 0.98 } };
