@@ -81,15 +81,15 @@
   /* Portfolio accent palette */
   --accent-green:      #4ade80;
   --accent-yellow:     #f59e0b;
-  --accent-cyan:       #38bdf8;
+  --accent-cyan:       #45e0d0;
   --text-primary:      #f1f1f1;
   --text-muted:        #6b7280;
 
   /* Chart, maps to accent palette for data viz */
   --chart-1:           #4ade80;
-  --chart-2:           #38bdf8;
+  --chart-2:           #45e0d0;
   --chart-3:           #f59e0b;
-  --chart-4:           #a78bfa;
+  --chart-4:           #8a9099;
   --chart-5:           #fb7185;
 
   --radius: 0.5rem;
@@ -252,12 +252,12 @@
 .spec-btn:hover   { transform: translateY(-1px); filter: brightness(1.08) saturate(1.05); }
 .spec-btn:active  { transform: translateY(0) scale(.99); }
 .spec-card        { transition: transform .3s cubic-bezier(.23,1,.32,1), border-color .3s ease, box-shadow .3s ease; }
-.spec-card:hover  { transform: translateY(-3px); border-color: #2b3240 !important; box-shadow: 0 14px 40px -20px rgba(139,124,255,0.35); }
+.spec-card:hover  { transform: translateY(-3px); border-color: #2b3240 !important; box-shadow: 0 14px 40px -20px rgba(0,0,0,0.6); }
 
 @keyframes spec-pop { from { opacity: 0; transform: translateY(-8px) scale(0.98); } to { opacity: 1; transform: none; } }
 .spec-cmdk { animation: spec-pop 0.2s cubic-bezier(.23,1,.32,1); }
 
-::selection { background-color: rgba(139,124,255,0.25); color: #eaecef; }
+::selection { background-color: rgba(69,224,208,0.25); color: #eaecef; }
 
 /* ─── Custom cursor, only active once JS confirms a fine pointer and no
    reduced-motion preference (see Cursor.tsx). Native cursor is the default

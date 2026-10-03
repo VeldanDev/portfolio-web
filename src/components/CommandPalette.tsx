@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 
 const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';
-const C = { panel: '#101218', panel2: '#0d0f14', line: '#1c2029', line2: '#242a35', text: '#eaecef', muted: '#8a9099', dim: '#565c66', violet: '#8b7cff' };
+const C = { panel: '#101218', panel2: '#0d0f14', line: '#1c2029', line2: '#242a35', text: '#eaecef', muted: '#8a9099', dim: '#565c66', cyan: '#45e0d0' };
 
 type Item = {
   id: string; label: string; hint?: string; group: string;
@@ -152,7 +152,7 @@ export default function CommandPalette() {
                           onMouseMove={() => setActive(idx)}
                           onClick={() => choose(it)}
                           className="w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors"
-                          style={{ background: on ? 'rgba(139,124,255,0.12)' : 'transparent', color: on ? C.text : C.muted }}
+                          style={{ background: on ? 'rgba(69,224,208,0.10)' : 'transparent', color: on ? C.text : C.muted }}
                         >
                           <Icon size={15} strokeWidth={1.7} />
                           <span className="flex-1 text-sm">{it.label}</span>
@@ -160,7 +160,7 @@ export default function CommandPalette() {
                           {it.hint && !(it.id === 'email' && copied) && (
                             <span className="text-[11px] truncate max-w-[180px]" style={{ color: C.dim, fontFamily: 'var(--font-plex-mono)' }}>{it.hint}</span>
                           )}
-                          {on && <CornerDownLeft size={13} style={{ color: C.violet }} />}
+                          {on && <CornerDownLeft size={13} style={{ color: C.cyan }} />}
                         </button>
                       );
                     })}

@@ -6,7 +6,7 @@ import CountUp from '@/components/CountUp';
 
 const C = {
   bg: '#0a0b0e', panel: '#101218', panel2: '#0d0f14', line: '#1c2029', line2: '#242a35',
-  text: '#eaecef', muted: '#8a9099', dim: '#565c66', violet: '#8b7cff', cyan: '#45e0d0', blue: '#6ea8ff',
+  text: '#eaecef', muted: '#8a9099', dim: '#565c66',
 };
 const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';
 const ease: [number, number, number, number] = [0.23, 1, 0.32, 1];
@@ -14,24 +14,24 @@ const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 const view = { once: true, margin: '-60px' } as const;
 
 const STATS = [
-  { label: 'Years building', num: 3, suffix: '+', color: C.violet },
-  { label: 'Public repos', num: 25, suffix: '', color: C.cyan },
-  { label: 'On npm', num: 2, suffix: '', color: C.blue },
-  { label: 'Live products', num: 3, suffix: '', color: '#3ee6a0' },
+  { label: 'Years building', num: 3, suffix: '+', color: C.text },
+  { label: 'Public repos', num: 25, suffix: '', color: C.text },
+  { label: 'On npm', num: 2, suffix: '', color: C.text },
+  { label: 'Live products', num: 3, suffix: '', color: C.text },
 ];
 
 const FOCUS = [
-  { icon: Cpu, label: 'AI Engineering', color: C.violet, desc: 'Autonomous agents, tool-use and orchestration, retrieval, and LLM-driven automation that does real work.' },
-  { icon: ShieldHalf, label: 'Cybersecurity', color: C.cyan, desc: 'Offensive tooling: OSINT and recon frameworks, web vulnerability scanning, and thinking like an attacker.' },
-  { icon: Boxes, label: 'Software', color: C.blue, desc: 'Full-stack products with Next.js and Python, from database and auth to a shipped, running interface.' },
-  { icon: Workflow, label: 'Automation', color: '#3ee6a0', desc: 'Pipelines and bots that run on their own: scheduled jobs, scraping, and workflows wired end to end.' },
+  { icon: Cpu, label: 'AI Engineering', color: C.muted, desc: 'Autonomous agents, tool-use and orchestration, retrieval, and LLM-driven automation that does real work.' },
+  { icon: ShieldHalf, label: 'Cybersecurity', color: C.muted, desc: 'Offensive tooling: OSINT and recon frameworks, web vulnerability scanning, and thinking like an attacker.' },
+  { icon: Boxes, label: 'Software', color: C.muted, desc: 'Full-stack products with Next.js and Python, from database and auth to a shipped, running interface.' },
+  { icon: Workflow, label: 'Automation', color: C.muted, desc: 'Pipelines and bots that run on their own: scheduled jobs, scraping, and workflows wired end to end.' },
 ];
 
 const STACK = [
-  { group: 'Languages', color: C.violet, items: ['Python', 'TypeScript', 'JavaScript', 'PHP', 'C / C++', 'Bash', 'SQL'] },
-  { group: 'AI / ML', color: C.cyan, items: ['LLM agents', 'TensorFlow', 'MCP', 'Vercel AI SDK', 'RAG'] },
-  { group: 'Security', color: C.blue, items: ['OSINT', 'Recon', 'OWASP', 'Nmap', 'Burp / PortSwigger'] },
-  { group: 'Web / Infra', color: '#3ee6a0', items: ['Next.js', 'React', 'Node', 'Prisma', 'Supabase', 'Linux', 'Docker'] },
+  { group: 'Languages', color: C.muted, items: ['Python', 'TypeScript', 'JavaScript', 'PHP', 'C / C++', 'Bash', 'SQL'] },
+  { group: 'AI / ML', color: C.muted, items: ['LLM agents', 'TensorFlow', 'MCP', 'Vercel AI SDK', 'RAG'] },
+  { group: 'Security', color: C.muted, items: ['OSINT', 'Recon', 'OWASP', 'Nmap', 'Burp / PortSwigger'] },
+  { group: 'Web / Infra', color: C.muted, items: ['Next.js', 'React', 'Node', 'Prisma', 'Supabase', 'Linux', 'Docker'] },
 ];
 
 function Label({ children }: { children: React.ReactNode }) {

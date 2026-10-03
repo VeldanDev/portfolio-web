@@ -7,7 +7,7 @@ import Magnetic from '@/components/interactive/Magnetic';
 
 const C = {
   bg: '#0a0b0e', panel: '#101218', panel2: '#0d0f14', line: '#1c2029', line2: '#242a35',
-  text: '#eaecef', muted: '#8a9099', dim: '#565c66', violet: '#8b7cff', cyan: '#45e0d0',
+  text: '#eaecef', muted: '#8a9099', dim: '#565c66',
 };
 const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';
 const EMAIL = 'kamadoaditya8@gmail.com';
@@ -16,10 +16,10 @@ const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 const view = { once: true, margin: '-50px' } as const;
 
 const CHANNELS = [
-  { icon: Mail, label: 'Email', value: EMAIL, href: `mailto:${EMAIL}`, color: C.violet },
-  { icon: MessageCircle, label: 'WhatsApp', value: '+62 895-328-615-374', href: 'https://wa.me/62895328615374', color: C.cyan },
-  { icon: GitBranch, label: 'GitHub', value: '@VeldanDev', href: 'https://github.com/VeldanDev', color: '#6ea8ff' },
-  { icon: Music2, label: 'TikTok', value: '@veldorable', href: 'https://www.tiktok.com/@veldorable', color: '#3ee6a0' },
+  { icon: Mail, label: 'Email', value: EMAIL, href: `mailto:${EMAIL}`, color: C.muted },
+  { icon: MessageCircle, label: 'WhatsApp', value: '+62 895-328-615-374', href: 'https://wa.me/62895328615374', color: C.muted },
+  { icon: GitBranch, label: 'GitHub', value: '@VeldanDev', href: 'https://github.com/VeldanDev', color: C.muted },
+  { icon: Music2, label: 'TikTok', value: '@veldorable', href: 'https://www.tiktok.com/@veldorable', color: C.muted },
   { icon: MapPin, label: 'Location', value: 'Medan, Indonesia', href: null, color: C.muted },
 ];
 

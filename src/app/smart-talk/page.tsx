@@ -6,7 +6,7 @@ import { Send, Bot, User, Zap } from 'lucide-react';
 
 const C = {
   bg: '#0a0b0e', panel: '#101218', panel2: '#0d0f14', line: '#1c2029', line2: '#242a35',
-  text: '#eaecef', muted: '#8a9099', dim: '#565c66', violet: '#8b7cff', cyan: '#45e0d0',
+  text: '#eaecef', muted: '#8a9099', dim: '#565c66', cyan: '#45e0d0',
 };
 const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';
 const ease: [number, number, number, number] = [0.23, 1, 0.32, 1];
@@ -118,7 +118,7 @@ function TypingIndicator() {
         className="flex items-center justify-center w-6 h-6 rounded-full border shrink-0"
         style={{ borderColor: C.line2, background: C.panel2 }}
       >
-        <Bot size={11} strokeWidth={1.5} style={{ color: C.violet }} />
+        <Bot size={11} strokeWidth={1.5} style={{ color: C.cyan }} />
       </span>
       <div
         className="flex gap-1 px-3 py-2.5 rounded-lg rounded-bl-sm border"
@@ -235,7 +235,7 @@ export default function SmartTalkPage() {
                   className="flex items-center justify-center w-12 h-12 rounded-full border"
                   style={{ borderColor: C.line2, background: C.panel2 }}
                 >
-                  <Bot size={20} strokeWidth={1.5} style={{ color: C.violet }} />
+                  <Bot size={20} strokeWidth={1.5} style={{ color: C.cyan }} />
                 </div>
                 <div className="text-center">
                   <p className="text-sm mb-1" style={{ color: C.text }}>Hi, I&apos;m Aditya&apos;s assistant.</p>
@@ -283,7 +283,7 @@ export default function SmartTalkPage() {
                     {msg.role === 'user' ? (
                       <User size={11} strokeWidth={1.5} style={{ color: C.cyan }} />
                     ) : (
-                      <Bot size={11} strokeWidth={1.5} style={{ color: C.violet }} />
+                      <Bot size={11} strokeWidth={1.5} style={{ color: C.cyan }} />
                     )}
                   </span>
 

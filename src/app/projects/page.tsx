@@ -13,7 +13,7 @@ import { PROJECTS, FILTERS, CAT_COLOR, ST_META, type Project, type Cat } from '@
 const C = {
   bg: '#0a0b0e', panel: '#101218', panel2: '#0d0f14', line: '#1c2029', line2: '#242a35',
   text: '#eaecef', muted: '#8a9099', dim: '#565c66',
-  violet: '#8b7cff', cyan: '#45e0d0', blue: '#6ea8ff', live: '#3ee6a0', wip: '#f5a524', done: '#6ea8ff',
+  cyan: '#45e0d0', live: '#3ee6a0', wip: '#f5a524',
 };
 const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';
 
@@ -84,7 +84,7 @@ function Card({ p, i }: { p: Project; i: number }) {
         )}
         {p.caseStudy && (
           <Link href={`/projects/${p.id}`}
-            className="ml-auto flex items-center gap-1.5 text-xs hover:opacity-80 transition-opacity" style={{ color: C.violet }}>
+            className="ml-auto flex items-center gap-1.5 text-xs hover:opacity-80 transition-opacity" style={{ color: C.cyan }}>
             <FileText size={13} /> Case study
           </Link>
         )}
@@ -122,8 +122,8 @@ export default function ProjectsPage() {
           {[
             { v: counts.total, l: 'Projects', c: C.text },
             { v: counts.live, l: 'Live', c: C.live },
-            { v: counts.ai, l: 'AI', c: C.violet },
-            { v: counts.security, l: 'Security', c: C.cyan },
+            { v: counts.ai, l: 'AI', c: C.text },
+            { v: counts.security, l: 'Security', c: C.text },
           ].map((s, k) => (
             <div key={s.l} className={`px-4 py-4 ${k ? 'border-l' : ''}`} style={{ borderColor: C.line }}>
               <div className="text-2xl font-bold tabular-nums" style={{ color: s.c, fontFamily: 'var(--font-display)' }}><CountUp to={s.v} /></div>

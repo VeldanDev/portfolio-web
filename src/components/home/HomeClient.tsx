@@ -20,7 +20,6 @@ const C = {
   text: '#eaecef',
   muted: '#8a9099',
   dim: '#565c66',
-  violet: '#8b7cff',
   cyan: '#45e0d0',
   live: '#3ee6a0',
   wip: '#f5a524',
@@ -158,9 +157,9 @@ function SignalPanel() {
 const STACK = ['Python', 'TypeScript', 'Next.js', 'AI Agents / LLM', 'OSINT · Recon', 'Linux'];
 
 const DOMAINS = [
-  { icon: Cpu, label: 'AI Engineering', desc: 'Autonomous agents, tool-use, retrieval, automation.', color: C.violet },
-  { icon: ShieldHalf, label: 'Cybersecurity', desc: 'OSINT, recon, vulnerability scanning, tooling.', color: C.cyan },
-  { icon: Boxes, label: 'Software', desc: 'Full-stack products with Next.js and Python.', color: '#6ea8ff' },
+  { icon: Cpu, label: 'AI Engineering', desc: 'Autonomous agents, tool-use, retrieval, automation.', color: C.muted },
+  { icon: ShieldHalf, label: 'Cybersecurity', desc: 'OSINT, recon, vulnerability scanning, tooling.', color: C.muted },
+  { icon: Boxes, label: 'Software', desc: 'Full-stack products with Next.js and Python.', color: C.muted },
 ];
 
 const FEATURED = [
@@ -168,7 +167,7 @@ const FEATURED = [
     id: 'scepter',
     title: 'Scepter',
     tag: 'AI tooling',
-    tagColor: C.violet,
+    tagColor: C.muted,
     description:
       'Zero-dependency CLI that checks whether an MCP server is alive, maintained, and safe before you wire it into an agent. Published on npm as scepter-mcp.',
     stack: ['TypeScript', 'Node', 'MCP'],
@@ -180,7 +179,7 @@ const FEATURED = [
     id: 'spencerweb',
     title: 'SpencerWeb',
     tag: 'Security',
-    tagColor: C.cyan,
+    tagColor: C.muted,
     description:
       'Web vulnerability scanner covering SQLi, XSS, CSRF, SSL and exposed files, mapped to the OWASP Top 10, with a live dashboard and auto-generated PDF reports.',
     stack: ['Python', 'OWASP', 'Express'],
@@ -192,7 +191,7 @@ const FEATURED = [
     id: 'tiburon',
     title: 'Tiburon',
     tag: 'AI systems',
-    tagColor: C.violet,
+    tagColor: C.muted,
     description:
       'Self-hosted AI agent with 18 tools across voice, vision, and automation. Runs on Telegram, executes scheduled cron jobs, and gates any high-impact action behind an explicit permission step before acting.',
     stack: ['Python', 'OpenClaw', 'LLM', 'Agents'],
@@ -204,7 +203,7 @@ const FEATURED = [
     id: 'specter',
     title: 'Specter 2.0',
     tag: 'Security',
-    tagColor: C.cyan,
+    tagColor: C.muted,
     description:
       'CLI OSINT and reconnaissance framework for information gathering, built lean enough to run on a Raspberry Pi Zero.',
     stack: ['Python', 'OSINT', 'CLI'],

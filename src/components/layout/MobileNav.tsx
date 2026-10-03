@@ -11,7 +11,7 @@ import {
   Bot,
 } from 'lucide-react';
 
-const C = { panel: '#0d0f14', line: '#1c2029', muted: '#8a9099', violet: '#8b7cff' };
+const C = { panel: '#0d0f14', line: '#1c2029', muted: '#8a9099', cyan: '#45e0d0' };
 
 const NAV_ITEMS = [
   { href: '/',             label: 'Home',         icon: Home       },
@@ -41,7 +41,7 @@ export default function MobileNav() {
                 href={href}
                 aria-label={label}
                 className="flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-150"
-                style={active ? { color: C.violet, background: 'rgba(139,124,255,0.12)' } : { color: C.muted }}
+                style={active ? { color: C.cyan, background: 'rgba(69,224,208,0.10)' } : { color: C.muted }}
               >
                 <Icon size={19} strokeWidth={active ? 2 : 1.5} />
               </Link>

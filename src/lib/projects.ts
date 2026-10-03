@@ -31,11 +31,13 @@ export interface Project {
   caseStudy?: CaseStudy;
 }
 
+// Neutral on purpose: the site keeps one accent (cyan #45e0d0) for emphasis,
+// so category chips and status labels stay grey instead of per-item colors.
 export const CAT_COLOR: Record<Cat, string> = {
-  ai: '#8b7cff', security: '#45e0d0', web: '#6ea8ff', mobile: '#f5a524',
+  ai: '#8a9099', security: '#8a9099', web: '#8a9099', mobile: '#8a9099',
 };
 export const ST_META: Record<St, { c: string; l: string }> = {
-  live: { c: '#3ee6a0', l: 'live' }, wip: { c: '#f5a524', l: 'in progress' }, done: { c: '#6ea8ff', l: 'shipped' },
+  live: { c: '#3ee6a0', l: 'live' }, wip: { c: '#f5a524', l: 'in progress' }, done: { c: '#8a9099', l: 'shipped' },
 };
 
 export const PROJECTS: Project[] = [

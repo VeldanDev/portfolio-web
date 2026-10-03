@@ -17,7 +17,6 @@ const C = {
   text: '#eaecef',
   muted: '#8a9099',
   dim: '#565c66',
-  violet: '#8b7cff',
   cyan: '#45e0d0',
 };
 const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';

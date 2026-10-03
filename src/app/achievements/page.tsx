@@ -5,7 +5,7 @@ import { Award, Package, ShieldCheck, GitBranch, GraduationCap, Target, External
 
 const C = {
   bg: '#0a0b0e', panel: '#101218', panel2: '#0d0f14', line: '#1c2029', line2: '#242a35',
-  text: '#eaecef', muted: '#8a9099', dim: '#565c66', violet: '#8b7cff', cyan: '#45e0d0', live: '#3ee6a0', wip: '#f5a524',
+  text: '#eaecef', muted: '#8a9099', dim: '#565c66', live: '#3ee6a0', wip: '#f5a524',
 };
 const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';
 const ease: [number, number, number, number] = [0.23, 1, 0.32, 1];
@@ -14,20 +14,20 @@ const view = { once: true, margin: '-60px' } as const;
 
 /* Real, honest milestones already earned */
 const MILESTONES = [
-  { icon: Package, title: 'Published Scepter on npm', meta: 'scepter-mcp · open source', color: C.violet, href: 'https://www.npmjs.com/package/scepter-mcp' },
-  { icon: ShieldCheck, title: 'SpencerWeb OWASP scanner', meta: 'Final project · web security', color: C.cyan, href: 'https://github.com/VeldanDev/SpencerWeb' },
-  { icon: GitBranch, title: '18+ repositories shipped', meta: 'AI, security & software', color: '#6ea8ff', href: 'https://github.com/VeldanDev' },
-  { icon: GraduationCap, title: 'Tech educator', meta: '@veldorable · explaining tech', color: C.live, href: 'https://www.tiktok.com/@veldorable' },
+  { icon: Package, title: 'Published Scepter on npm', meta: 'scepter-mcp · open source', color: C.muted, href: 'https://www.npmjs.com/package/scepter-mcp' },
+  { icon: ShieldCheck, title: 'SpencerWeb OWASP scanner', meta: 'Final project · web security', color: C.muted, href: 'https://github.com/VeldanDev/SpencerWeb' },
+  { icon: GitBranch, title: '18+ repositories shipped', meta: 'AI, security & software', color: C.muted, href: 'https://github.com/VeldanDev' },
+  { icon: GraduationCap, title: 'Tech educator', meta: '@veldorable · explaining tech', color: C.muted, href: 'https://www.tiktok.com/@veldorable' },
 ];
 
 /* Credentials being pursued, honestly marked, filled with real badges as earned */
 const PURSUING = [
-  { name: 'Cisco Ethical Hacker', track: 'Security', status: 'in progress', color: C.cyan },
-  { name: 'TryHackMe learning path', track: 'Security', status: 'in progress', color: C.cyan },
-  { name: 'Kaggle: Intro to Machine Learning', track: 'AI / ML', status: 'planned', color: C.violet },
-  { name: 'freeCodeCamp: ML with Python', track: 'AI / ML', status: 'planned', color: C.violet },
-  { name: 'Google Cybersecurity Certificate', track: 'Security', status: 'planned', color: C.cyan },
-  { name: 'Microsoft Azure Fundamentals', track: 'Cloud', status: 'planned', color: '#6ea8ff' },
+  { name: 'Cisco Ethical Hacker', track: 'Security', status: 'in progress', color: C.muted },
+  { name: 'TryHackMe learning path', track: 'Security', status: 'in progress', color: C.muted },
+  { name: 'Kaggle: Intro to Machine Learning', track: 'AI / ML', status: 'planned', color: C.muted },
+  { name: 'freeCodeCamp: ML with Python', track: 'AI / ML', status: 'planned', color: C.muted },
+  { name: 'Google Cybersecurity Certificate', track: 'Security', status: 'planned', color: C.muted },
+  { name: 'Microsoft Azure Fundamentals', track: 'Cloud', status: 'planned', color: C.muted },
 ];
 
 export default function AchievementsPage() {
@@ -76,7 +76,7 @@ export default function AchievementsPage() {
         {/* Pursuing / roadmap */}
         <section className="mb-14">
           <div className="flex items-center gap-2 mb-4">
-            <Target size={14} style={{ color: C.violet }} />
+            <Target size={14} style={{ color: C.muted }} />
             <p className="text-[11px] tracking-[0.2em] uppercase" style={{ color: C.dim, fontFamily: 'var(--font-plex-mono)' }}>certifications in progress</p>
           </div>
           <div className="rounded-xl border overflow-hidden" style={{ borderColor: C.line, background: C.panel }}>
@@ -102,8 +102,8 @@ export default function AchievementsPage() {
           <p className="text-[11px] tracking-[0.2em] uppercase mb-4" style={{ color: C.dim, fontFamily: 'var(--font-plex-mono)' }}>verified badges</p>
           <div className="grid sm:grid-cols-2 gap-4">
             {[
-              { name: 'TryHackMe', note: 'Public profile & rank badge', icon: ShieldCheck, color: C.cyan },
-              { name: 'Credly', note: 'Cisco · Microsoft · IBM badges', icon: Award, color: C.violet },
+              { name: 'TryHackMe', note: 'Public profile & rank badge', icon: ShieldCheck, color: C.muted },
+              { name: 'Credly', note: 'Cisco · Microsoft · IBM badges', icon: Award, color: C.muted },
             ].map((b) => {
               const Icon = b.icon;
               return (

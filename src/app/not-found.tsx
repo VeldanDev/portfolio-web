@@ -7,7 +7,7 @@ import Magnetic from '@/components/interactive/Magnetic';
 
 const C = {
   bg: '#0a0b0e', panel: '#101218', panel2: '#0d0f14', line: '#1c2029', line2: '#242a35',
-  text: '#eaecef', muted: '#8a9099', dim: '#565c66', violet: '#8b7cff', cyan: '#45e0d0', lost: '#f5a524',
+  text: '#eaecef', muted: '#8a9099', dim: '#565c66', lost: '#f5a524',
 };
 const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';
 const ease: [number, number, number, number] = [0.23, 1, 0.32, 1];

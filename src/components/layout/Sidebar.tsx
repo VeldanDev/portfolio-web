@@ -65,7 +65,7 @@ export default function Sidebar() {
                   href={href}
                   className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200"
                   style={active
-                    ? { background: 'rgba(139,124,255,0.12)', color: '#c7c0ff' }
+                    ? { background: 'rgba(69,224,208,0.10)', color: '#45e0d0' }
                     : { color: '#8a9099' }}
                   onMouseEnter={(e) => { if (!active) e.currentTarget.style.color = '#eaecef'; }}
                   onMouseLeave={(e) => { if (!active) e.currentTarget.style.color = '#8a9099'; }}

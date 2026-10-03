@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-const C = { violet: '#8b7cff', cyan: '#45e0d0' };
+const C = { cyan: '#45e0d0' };
 
 // Custom ring cursor. Fine-pointer only (mouse/trackpad) -- never mounts its
 // listeners on touch, so phones pay zero cost for this. Position and scale
@@ -65,7 +65,7 @@ export default function Cursor() {
         ref={ringRef}
         aria-hidden
         className="cursor-ring pointer-events-none fixed left-0 top-0 z-[100] w-8 h-8 rounded-full border hidden"
-        style={{ borderColor: C.violet, transition: 'scale 0.15s ease' }}
+        style={{ borderColor: C.cyan, transition: 'scale 0.15s ease' }}
       />
     </>
   );

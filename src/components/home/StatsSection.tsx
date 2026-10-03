@@ -8,7 +8,7 @@ import type { GitHubStats, WakaTimeStats, GitHubContributionWeek } from '@/types
 
 const C = {
   bg: '#0a0b0e', panel: '#101218', panel2: '#0d0f14', line: '#1c2029', line2: '#242a35',
-  text: '#eaecef', muted: '#8a9099', dim: '#565c66', violet: '#8b7cff', cyan: '#45e0d0', live: '#3ee6a0',
+  text: '#eaecef', muted: '#8a9099', dim: '#565c66', cyan: '#45e0d0', live: '#3ee6a0',
 };
 const SPECTRAL = 'linear-gradient(#45e0d0,#45e0d0)';
 const ease: [number, number, number, number] = [0.23, 1, 0.32, 1];
@@ -60,7 +60,7 @@ function LangBar({ name, percentage, color, delay }: { name: string; percentage:
 
 /* ── Contribution heatmap, restyled from the old /dashboard page ─────────── */
 const LEVEL_COLORS: Record<0 | 1 | 2 | 3 | 4, string> = {
-  0: '#161a20', 1: '#20263f', 2: '#3a4f8f', 3: '#5b8fd0', 4: C.cyan,
+  0: '#161a20', 1: '#14352f', 2: '#1e574d', 3: '#2e8a79', 4: C.cyan,
 };
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const DAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
@@ -155,7 +155,7 @@ export default function StatsSection({ github, wakatime }: Props) {
 
         {github && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-            <StatTile label="Contributions" value={github.totalContributions} icon={Activity} color={C.violet} delay={0} />
+            <StatTile label="Contributions" value={github.totalContributions} icon={Activity} color={C.text} delay={0} />
             <StatTile label="Repositories" value={github.publicRepos} icon={GitBranch} color={C.text} delay={0.05} />
             <StatTile label="Current streak" value={`${github.currentStreak ?? 0}d`} icon={Zap} color="#f5a524" delay={0.1} />
             {wakatime && <StatTile label="Coding, 30d" value={wakatime.totalText} icon={Clock} color={C.cyan} delay={0.15} />}
